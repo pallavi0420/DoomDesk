@@ -1,0 +1,32 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid == $uid || root.child('users').child(auth.uid).child('role').val() == 'WARDEN')",
+        ".write": "auth != null && (auth.uid == $uid || root.child('users').child(auth.uid).child('role').val() == 'WARDEN')"
+      }
+    },
+    "complaints": {
+      ".read": "auth != null",
+      "$complaintId": {
+        ".write": "auth != null && (!data.exists() || data.child('studentId').val() == auth.uid || root.child('users').child(auth.uid).child('role').val() == 'WARDEN')"
+      }
+    },
+    "announcements": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() == 'WARDEN'"
+    },
+    "feedbacks": {
+      ".read": "auth != null",
+      "$feedbackId": {
+        ".write": "auth != null && (!data.exists() || data.child('studentId').val() == auth.uid || root.child('users').child(auth.uid).child('role').val() == 'WARDEN')"
+      }
+    },
+    "notifications": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid == $uid || $uid == 'all')",
+        ".write": "auth != null"
+      }
+    }
+  }
+}

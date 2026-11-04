@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DormDesk</string>
+    <string name="app_tagline">Your Hostel. Your Voice. One Desk.</string>
+    <string name="privacy_policy_url">https://dormdesk.app/privacy</string>
+    <string name="terms_of_service_url">https://dormdesk.app/terms</string>
+    <string name="data_deletion_url">https://dormdesk.app/data-deletion</string>
+    <string name="support_email">support@dormdesk.app</string>
+    <string name="app_version">1.0.0</string>
+    <string name="delete_account_title">Delete Account</string>
+    <string name="delete_account_message">Are you sure you want to permanently delete your account? This will remove all your personal data, complaints, feedback, and chat history. This action cannot be undone.</string>
+    <string name="delete_account_confirm">Delete Permanently</string>
+    <string name="delete_account_cancel">Cancel</string>
+    <string name="account_deleted_message">Your account and all associated data have been permanently deleted.</string>
+</resources>

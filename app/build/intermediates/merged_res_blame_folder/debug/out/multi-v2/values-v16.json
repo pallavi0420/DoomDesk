@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.dormdesk.app-mergeDebugResources-58:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Himanshi Arora\\.gradle\\caches\\8.14.6\\transforms\\a1b95ec56c9aca6c2ed2c5d0e006a84d\\transformed\\core-1.12.0\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="card_border">#E3DED8</color>
+    <color name="card_surface">#FFFFFF</color>
+    <color name="dark_bg">#1A1715</color>
+    <color name="dark_card_border">#3D3734</color>
+    <color name="dark_surface">#252220</color>
+    <color name="deep_charcoal">#302D2A</color>
+    <color name="espresso_brown">#40352F</color>
+    <color name="espresso_light">#5C4D44</color>
+    <color name="muted_terracotta">#B87962</color>
+    <color name="neutral_bg">#F7F5F0</color>
+    <color name="sage_container">#E5ECE4</color>
+    <color name="sage_green">#7D927B</color>
+    <color name="soft_white">#FFFEFC</color>
+    <color name="terracotta_container">#F5E8E4</color>
+    <color name="terracotta_soft">#D99B85</color>
+    <color name="warm_ivory">#F7F5F0</color>
+    <color name="warm_taupe">#A89B8E</color>
+    <string name="app_name">DormDesk</string>
+    <string name="app_tagline">Your Hostel. Your Voice. One Desk.</string>
+    <style name="Theme.DormDesk" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/warm_ivory</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/warm_ivory</item>
+    </style>
+</resources>

@@ -1,0 +1,27 @@
+R_DEF: Internal format may change without notice
+local
+color card_border
+color card_surface
+color dark_bg
+color dark_card_border
+color dark_surface
+color deep_charcoal
+color espresso_brown
+color espresso_light
+color muted_terracotta
+color neutral_bg
+color sage_container
+color sage_green
+color soft_white
+color terracotta_container
+color terracotta_soft
+color warm_ivory
+color warm_taupe
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string app_tagline
+style Theme.DormDesk
+xml backup_rules
+xml data_extraction_rules
