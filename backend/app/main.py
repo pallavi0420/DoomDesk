@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-from app.groq_service import query_groq_or_fallback
+from app.gemini_service import query_gemini_or_fallback
 from app.faq_data import FAQS
 
 # Load .env if present
@@ -18,7 +18,7 @@ load_dotenv()
 
 app = FastAPI(
     title="DormDesk AI Backend",
-    description="Secure FastAPI backend providing Groq LLM integration and Local FAQ fallback for the DormDesk Android App",
+    description="Secure FastAPI backend providing Google Gemini API integration and Local FAQ fallback for the DormDesk Android App",
     version="1.0.0"
 )
 
@@ -45,13 +45,14 @@ class ChatRequestDto(BaseModel):
 
 class ChatResponseDto(BaseModel):
     reply: str
-    source: str = "groq"
+    source: str = "gemini"
     isFallback: bool = False
     actionRoute: Optional[str] = None
 
 class HealthResponseDto(BaseModel):
     status: str
-    groqConfigured: bool
+    aiConfigured: bool
+    provider: str
     model: str
 
 @app.get("/", tags=["Root"])
@@ -59,18 +60,20 @@ def root():
     return {
         "app": "DormDesk AI Backend",
         "tagline": "Your Hostel. Your Voice. One Desk.",
+        "provider": "Google Gemini",
         "status": "operational"
     }
 
 @app.get("/api/health", response_model=HealthResponseDto, tags=["Health"])
 def health_check():
-    api_key = os.getenv("GROQ_API_KEY", "").strip()
-    model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
-    is_configured = bool(api_key and api_key != "your_groq_api_key_here")
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
+    is_configured = bool(api_key and api_key != "your_gemini_api_key_here")
 
     return HealthResponseDto(
         status="ok",
-        groqConfigured=is_configured,
+        aiConfigured=is_configured,
+        provider="Google Gemini",
         model=model
     )
 
@@ -83,7 +86,7 @@ async def chat_endpoint(payload: ChatRequestDto):
     if payload.conversationHistory:
         history_dicts = [{"role": h.role, "content": h.content} for h in payload.conversationHistory]
 
-    result = await query_groq_or_fallback(
+    result = await query_gemini_or_fallback(
         user_message=payload.message,
         student_id=payload.studentId,
         student_name=payload.studentName,

@@ -15,6 +15,6 @@ data class ChatMessage(
     val message: String = "",
     val senderType: ChatSender = ChatSender.USER,
     val timestamp: Long = System.currentTimeMillis(),
-    val isGroqAi: Boolean = false,
+    val isGeminiAi: Boolean = false,
     val suggestedActionRoute: String? = null
 )

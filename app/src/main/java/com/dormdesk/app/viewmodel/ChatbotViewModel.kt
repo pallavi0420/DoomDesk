@@ -45,7 +45,7 @@ class ChatbotViewModel(
                 val resp = RetrofitClient.apiService.checkHealth()
                 if (resp.isSuccessful && resp.body() != null) {
                     val body = resp.body()!!
-                    _backendStatus.value = if (body.groqConfigured) "Groq AI Active (${body.model})" else "Local FAQ Backend"
+                    _backendStatus.value = if (body.aiConfigured) "Gemini AI Active (${body.model})" else "Local FAQ Backend"
                 } else {
                     _backendStatus.value = "Local Assistant"
                 }

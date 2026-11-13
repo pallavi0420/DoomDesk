@@ -21,7 +21,7 @@ data class ChatRequest(
 @Serializable
 data class ChatResponse(
     val reply: String,
-    val source: String = "groq",
+    val source: String = "gemini",
     val isFallback: Boolean = false,
     val actionRoute: String? = null
 )
@@ -29,7 +29,8 @@ data class ChatResponse(
 @Serializable
 data class HealthResponse(
     val status: String,
-    val groqConfigured: Boolean,
+    val aiConfigured: Boolean,
+    val provider: String = "Google Gemini",
     val model: String
 )
 

@@ -4,22 +4,169 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    
-    <group
-        android:translateX="30"
-        android:translateY="30">
-        <!-- Open Academic Book Icon (48x48 viewport) -->
-        <!-- Left Page -->
-        <path
-            android:fillColor="#2E7D5B"
-            android:pathData="M4,10c0,-2.21 1.79,-4 4,-4h14c1.1,0 2,0.9 2,2v26c0,1.1 -0.9,2 -2,2H8c-2.21,0 -4,1.79 -4,4V10z" />
-        <!-- Right Page -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M44,10c0,-2.21 -1.79,-4 -4,-4H26c-1.1,0 -2,0.9 -2,2v26c0,1.1 0.9,2 2,2h14c2.21,0 4,1.79 4,4V10z" />
-        <!-- Bookmark Ribbon -->
-        <path
-            android:fillColor="#E8F5E9"
-            android:pathData="M21,6h6v16l-3,-2 -3,2V6z" />
-    </group>
+
+    <!-- Flagpole & Pennant on Roof -->
+    <path
+        android:strokeColor="#A89B8E"
+        android:strokeWidth="1.5"
+        android:pathData="M54,26V18" />
+    <path
+        android:fillColor="#B87962"
+        android:pathData="M54,18 L63,21 L54,24 Z" />
+
+    <!-- Triangular Pediment / Roof of Central Hostel Block -->
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M28,38 L54,24 L80,38 Z" />
+    <!-- Roof trim line in Terracotta -->
+    <path
+        android:strokeColor="#B87962"
+        android:strokeWidth="2"
+        android:pathData="M27,38.5 L54,24 L81,38.5" />
+
+    <!-- Attic Circular Emblem / Vent -->
+    <path
+        android:fillColor="#B87962"
+        android:pathData="M54,30 A2.5,2.5 0 1,1 53.99,30 Z" />
+
+    <!-- Central Hostel Main Block Structure -->
+    <path
+        android:fillColor="#FFFEFC"
+        android:pathData="M31,38 h46 v42 h-46 z" />
+
+    <!-- Left Dormitory Wing -->
+    <path
+        android:fillColor="#F0ECE4"
+        android:pathData="M23,48 h9 v32 h-9 z" />
+    <!-- Left Wing Eave -->
+    <path
+        android:fillColor="#B87962"
+        android:pathData="M22,46 h11 v2.5 h-11 z" />
+
+    <!-- Right Dormitory Wing -->
+    <path
+        android:fillColor="#F0ECE4"
+        android:pathData="M76,48 h9 v32 h-9 z" />
+    <!-- Right Wing Eave -->
+    <path
+        android:fillColor="#B87962"
+        android:pathData="M75,46 h11 v2.5 h-11 z" />
+
+    <!-- Ground Floor Steps & Foundation Plinth -->
+    <path
+        android:fillColor="#A89B8E"
+        android:pathData="M20,80 h68 v2.5 h-68 z" />
+    <path
+        android:fillColor="#7A7067"
+        android:pathData="M43,80 h22 v3 h-22 z" />
+
+    <!-- Central Block Upper Floor Windows (Floor 3) -->
+    <!-- Window 1 -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M37,43 h6 v8 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M38,44 h4 v6 h-4 z" />
+
+    <!-- Window 2 (Center) -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M51,43 h6 v8 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M52,44 h4 v6 h-4 z" />
+
+    <!-- Window 3 -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M65,43 h6 v8 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M66,44 h4 v6 h-4 z" />
+
+    <!-- Central Block Middle Floor Windows (Floor 2) -->
+    <!-- Window 4 -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M37,56 h6 v8 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M38,57 h4 v6 h-4 z" />
+
+    <!-- Window 5 (Center) -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M51,56 h6 v8 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M52,57 h4 v6 h-4 z" />
+
+    <!-- Window 6 -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M65,56 h6 v8 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M66,57 h4 v6 h-4 z" />
+
+    <!-- Left Wing Windows -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M25,52 h5 v7 h-5 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M26,53 h3 v5 h-3 z" />
+
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M25,65 h5 v7 h-5 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M26,66 h3 v5 h-3 z" />
+
+    <!-- Right Wing Windows -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M78,52 h5 v7 h-5 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M79,53 h3 v5 h-3 z" />
+
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M78,65 h5 v7 h-5 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M79,66 h3 v5 h-3 z" />
+
+    <!-- Ground Floor Left & Right Windows -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M37,69 h6 v7 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M38,70 h4 v5 h-4 z" />
+
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M65,69 h6 v7 h-6 z" />
+    <path
+        android:fillColor="#F7F5F0"
+        android:pathData="M66,70 h4 v5 h-4 z" />
+
+    <!-- Main Hostel Entrance Archway Door -->
+    <path
+        android:fillColor="#B87962"
+        android:pathData="M49,70 c0,-2.5 2,-4.5 5,-4.5 c3,0 5,2 5,4.5 v10 h-10 Z" />
+    <!-- Door Inner Recess -->
+    <path
+        android:fillColor="#40352F"
+        android:pathData="M50.5,71 c0,-1.8 1.5,-3.2 3.5,-3.2 c2,0 3.5,1.4 3.5,3.2 v9 h-7 Z" />
+    <!-- Door Handle / Divider -->
+    <path
+        android:strokeColor="#FFFEFC"
+        android:strokeWidth="0.8"
+        android:pathData="M54,72 v8" />
+
 </vector>

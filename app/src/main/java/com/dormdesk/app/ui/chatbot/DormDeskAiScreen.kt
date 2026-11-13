@@ -276,10 +276,10 @@ fun ChatMessageBubble(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = if (message.isGroqAi) "DormDesk AI (Groq)" else "DormDesk Assistant",
+                            text = if (message.isGeminiAi) "DormDesk AI (Gemini)" else "DormDesk Assistant",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = if (message.isGroqAi) MutedTerracotta else StatusAssigned,
+                            color = if (message.isGeminiAi) MutedTerracotta else StatusAssigned,
                             fontSize = 10.sp
                         )
                     }

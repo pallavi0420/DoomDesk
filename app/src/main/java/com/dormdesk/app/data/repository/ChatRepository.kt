@@ -21,7 +21,7 @@ class ChatRepository {
         message = "Hello! I am DormDesk AI, your hostel assistant. How can I assist you with your room, complaints, or hostel updates today?",
         senderType = ChatSender.ASSISTANT,
         timestamp = System.currentTimeMillis() - 60000,
-        isGroqAi = false
+        isGeminiAi = false
     )
 
     private val _messages = MutableStateFlow<List<ChatMessage>>(listOf(initialWelcome))
@@ -57,7 +57,7 @@ class ChatRepository {
 
         // Try FastAPI backend first
         var assistantReply: String
-        var isGroq = false
+        var isGemini = false
         var actionRoute: String? = null
 
         try {
@@ -75,7 +75,7 @@ class ChatRepository {
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 assistantReply = body.reply
-                isGroq = !body.isFallback
+                isGemini = !body.isFallback
                 actionRoute = body.actionRoute
             } else {
                 // Fallback to local engine
@@ -86,7 +86,7 @@ class ChatRepository {
                     announcements = announcements
                 )
                 assistantReply = localResponse.reply
-                isGroq = false
+                isGemini = false
                 actionRoute = localResponse.actionRoute
             }
         } catch (e: Exception) {
@@ -98,7 +98,7 @@ class ChatRepository {
                 announcements = announcements
             )
             assistantReply = localResponse.reply
-            isGroq = false
+            isGemini = false
             actionRoute = localResponse.actionRoute
         }
 
@@ -108,7 +108,7 @@ class ChatRepository {
             message = assistantReply,
             senderType = ChatSender.ASSISTANT,
             timestamp = System.currentTimeMillis(),
-            isGroqAi = isGroq,
+            isGeminiAi = isGemini,
             suggestedActionRoute = actionRoute
         )
 
