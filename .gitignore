@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Backend
+backend/.env
+backend/venv/
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+
+# Built outputs
+*.apk
+*.aab
