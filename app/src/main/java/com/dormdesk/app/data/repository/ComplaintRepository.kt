@@ -142,6 +142,13 @@ class ComplaintRepository(
             )
             currentList[index] = updated
             _complaints.value = currentList
+
+            notificationRepository?.notifyComplaintEvent(
+                userId = updated.studentId,
+                title = "Warden Feedback Added: #${updated.complaintId}",
+                message = "Warden left remarks: $remarks",
+                referenceId = updated.complaintId
+            )
             return Result.success(updated)
         }
         return Result.failure(Exception("Complaint not found"))
@@ -210,6 +217,13 @@ class ComplaintRepository(
             )
             currentList[index] = updated
             _complaints.value = currentList
+
+            notificationRepository?.notifyComplaintEvent(
+                userId = updated.studentId,
+                title = "Complaint Closed by Warden: #${updated.complaintId}",
+                message = "Administrative closure reason: $reason",
+                referenceId = updated.complaintId
+            )
             return Result.success(updated)
         }
         return Result.failure(Exception("Complaint not found"))

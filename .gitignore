@@ -20,3 +20,8 @@ backend/*.pyc
 # Built outputs
 *.apk
 *.aab
+
+# IDE & Keystores
+**/.idea/
+*.keystore
+*.jks

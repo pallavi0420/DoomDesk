@@ -32,7 +32,7 @@ class DormDeskApp : Application() {
         super.onCreate()
         instance = this
 
-        authRepository = AuthRepository()
+        authRepository = AuthRepository(this)
         notificationRepository = NotificationRepository()
         complaintRepository = ComplaintRepository(notificationRepository)
         feedbackRepository = FeedbackRepository(notificationRepository)

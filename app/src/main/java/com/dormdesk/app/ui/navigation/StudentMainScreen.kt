@@ -2,6 +2,8 @@ package com.dormdesk.app.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Assignment
+import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -23,7 +25,7 @@ import com.dormdesk.app.viewmodel.*
 
 sealed class StudentTab(val title: String, val selectedIcon: ImageVector, val unselectedIcon: ImageVector) {
     object Home : StudentTab("Home", Icons.Filled.Home, Icons.Outlined.Home)
-    object Complaints : StudentTab("Complaints", Icons.Filled.Assignment, Icons.Outlined.Assignment)
+    object Complaints : StudentTab("Complaints", Icons.AutoMirrored.Filled.Assignment, Icons.AutoMirrored.Outlined.Assignment)
     object AiChat : StudentTab("AI Desk", Icons.Filled.SmartToy, Icons.Outlined.SmartToy)
     object Notices : StudentTab("Notices", Icons.Filled.Campaign, Icons.Outlined.Campaign)
     object Profile : StudentTab("Profile", Icons.Filled.Person, Icons.Outlined.Person)

@@ -1,5 +1,6 @@
 package com.dormdesk.app.ui.feedback
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -7,8 +8,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Reply
+import androidx.compose.material.icons.automirrored.filled.Reply
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -200,15 +202,18 @@ fun WardenFeedbackScreen(
                             )
 
                             if (item.adminResponse.isBlank()) {
-                                TextButton(
+                                OutlinedButton(
                                     onClick = {
                                         replyInput = ""
                                         respondingFeedback = item
-                                    }
+                                    },
+                                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
+                                    shape = RoundedCornerShape(8.dp),
+                                    border = BorderStroke(1.dp, MutedTerracotta)
                                 ) {
-                                    Icon(Icons.Default.Reply, contentDescription = null, modifier = Modifier.size(14.dp), tint = MutedTerracotta)
+                                    Icon(Icons.AutoMirrored.Filled.Reply, contentDescription = null, modifier = Modifier.size(14.dp), tint = MutedTerracotta)
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Reply", style = MaterialTheme.typography.labelSmall, color = MutedTerracotta)
+                                    Text("Respond", style = MaterialTheme.typography.labelSmall, color = MutedTerracotta, fontWeight = FontWeight.Bold)
                                 }
                             }
                         }
@@ -265,7 +270,7 @@ fun WardenFeedbackScreen(
             onDismissRequest = { respondingFeedback = null },
             title = { Text("Respond to Feedback", style = MaterialTheme.typography.titleMedium) },
             text = {
-                Column {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Text(
                         "Student feedback on ${respondingFeedback?.category?.displayName}:",
                         style = MaterialTheme.typography.bodySmall,

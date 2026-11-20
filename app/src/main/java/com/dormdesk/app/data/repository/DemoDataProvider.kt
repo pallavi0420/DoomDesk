@@ -4,10 +4,10 @@ import com.dormdesk.app.data.model.*
 
 object DemoDataProvider {
 
-    // 2 Wardens / Admins
+    // 3 Wardens / Admins
     val wardenUser1 = User(
         uid = "warden_01",
-        fullName = "Dr. Rajeshwar Sharma",
+        fullName = "Rakesh Mehta",
         email = "warden@dormdesk.app",
         studentId = "STAFF-W01",
         phone = "+91 98765 43210",
@@ -19,13 +19,25 @@ object DemoDataProvider {
 
     val wardenUser2 = User(
         uid = "warden_02",
-        fullName = "Prof. Ananya Sen",
-        email = "ananya.warden@dormdesk.app",
+        fullName = "Dr. Rajeshwar Sharma",
+        email = "rajeshwar.warden@dormdesk.app",
         studentId = "STAFF-W02",
         phone = "+91 98765 43211",
         hostel = "Aryabhatta Hostel",
         block = "Admin Block",
         roomNumber = "G-03",
+        role = UserRole.WARDEN
+    )
+
+    val wardenUser3 = User(
+        uid = "warden_03",
+        fullName = "Prof. Ananya Sen",
+        email = "ananya.warden@dormdesk.app",
+        studentId = "STAFF-W03",
+        phone = "+91 98765 43212",
+        hostel = "Aryabhatta Hostel",
+        block = "Admin Block",
+        roomNumber = "G-04",
         role = UserRole.WARDEN
     )
 
@@ -127,7 +139,7 @@ object DemoDataProvider {
     )
 
     val allUsers = listOf(
-        wardenUser1, wardenUser2,
+        wardenUser1, wardenUser2, wardenUser3,
         studentUser1, studentUser2, studentUser3, studentUser4,
         studentUser5, studentUser6, studentUser7, studentUser8
     )

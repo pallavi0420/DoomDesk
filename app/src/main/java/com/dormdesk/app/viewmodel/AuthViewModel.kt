@@ -28,7 +28,7 @@ class AuthViewModel(
     private val _successMessage = MutableStateFlow<String?>(null)
     val successMessage: StateFlow<String?> = _successMessage.asStateFlow()
 
-    fun login(email: String, pass: String) {
+    fun login(email: String, pass: String, expectedRole: UserRole? = null) {
         if (email.isBlank() || pass.isBlank()) {
             _errorMessage.value = "Please enter both email and password."
             return
@@ -36,20 +36,11 @@ class AuthViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
-            val result = authRepository.login(email, pass)
+            val result = authRepository.login(email, pass, expectedRole)
             _isLoading.value = false
             result.onFailure {
                 _errorMessage.value = it.message ?: "Authentication failed"
             }
-        }
-    }
-
-    fun loginAsDemo(role: UserRole) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
-            authRepository.loginAsDemo(role)
-            _isLoading.value = false
         }
     }
 
@@ -62,7 +53,8 @@ class AuthViewModel(
         block: String,
         roomNumber: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String,
+        role: UserRole = UserRole.STUDENT
     ) {
         if (fullName.isBlank() || studentId.isBlank() || email.isBlank() || password.isBlank()) {
             _errorMessage.value = "Please fill in all required fields."
@@ -85,7 +77,7 @@ class AuthViewModel(
             hostel = hostel.trim(),
             block = block.trim(),
             roomNumber = roomNumber.trim(),
-            role = UserRole.STUDENT
+            role = role
         )
 
         viewModelScope.launch {
@@ -96,6 +88,19 @@ class AuthViewModel(
             result.onFailure {
                 _errorMessage.value = it.message ?: "Registration failed"
             }
+        }
+    }
+
+    fun deleteAccount(onComplete: () -> Unit = {}) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+            val current = currentUser.value
+            if (current != null) {
+                authRepository.deleteAccount(current.uid)
+            }
+            _isLoading.value = false
+            onComplete()
         }
     }
 

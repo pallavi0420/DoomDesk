@@ -2,11 +2,9 @@ package com.dormdesk.app.ui.auth
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -23,9 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dormdesk.app.data.model.UserRole
 import com.dormdesk.app.ui.components.DormDeskCard
 import com.dormdesk.app.ui.theme.*
@@ -37,8 +33,9 @@ fun LoginScreen(
     onNavigateToRegister: () -> Unit,
     onLoginSuccess: (UserRole) -> Unit
 ) {
-    var email by remember { mutableStateOf("student@dormdesk.app") }
-    var password by remember { mutableStateOf("password123") }
+    var selectedRole by remember { mutableStateOf(UserRole.STUDENT) }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var showForgotPasswordDialog by remember { mutableStateOf(false) }
     var forgotEmail by remember { mutableStateOf("") }
@@ -55,6 +52,13 @@ fun LoginScreen(
         }
     }
 
+    // Clear input fields and errors when switching portal
+    LaunchedEffect(selectedRole) {
+        authViewModel.clearMessages()
+        email = ""
+        password = ""
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -66,7 +70,7 @@ fun LoginScreen(
                 .padding(horizontal = 24.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // App Brand Logo & Name
             Box(
@@ -84,7 +88,7 @@ fun LoginScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
             Text(
                 text = "DormDesk",
@@ -100,7 +104,77 @@ fun LoginScreen(
                 fontWeight = FontWeight.Medium
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(28.dp))
+
+            // Role Selector Tab (Strict Resident vs Warden portal separation)
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.35f))
+            ) {
+                Row(modifier = Modifier.fillMaxWidth().padding(4.dp)) {
+                    // Resident Tab
+                    Surface(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(9.dp))
+                            .clickable { selectedRole = UserRole.STUDENT },
+                        color = if (selectedRole == UserRole.STUDENT) EspressoBrown else Color.Transparent
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(vertical = 10.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.School,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = if (selectedRole == UserRole.STUDENT) SoftWhite else WarmTaupe
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "Resident Portal",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = if (selectedRole == UserRole.STUDENT) FontWeight.Bold else FontWeight.Normal,
+                                color = if (selectedRole == UserRole.STUDENT) SoftWhite else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+
+                    // Warden Tab
+                    Surface(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(9.dp))
+                            .clickable { selectedRole = UserRole.WARDEN },
+                        color = if (selectedRole == UserRole.WARDEN) MutedTerracotta else Color.Transparent
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(vertical = 10.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.AdminPanelSettings,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = if (selectedRole == UserRole.WARDEN) SoftWhite else WarmTaupe
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "Warden Portal",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = if (selectedRole == UserRole.WARDEN) FontWeight.Bold else FontWeight.Normal,
+                                color = if (selectedRole == UserRole.WARDEN) SoftWhite else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Error / Success Banners
             if (errorMessage != null) {
@@ -136,12 +210,12 @@ fun LoginScreen(
             // Input Fields Card
             DormDeskCard(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Sign In",
+                    text = if (selectedRole == UserRole.WARDEN) "Warden Administration Sign In" else "Resident Sign In",
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Access your hostel resident account",
+                    text = if (selectedRole == UserRole.WARDEN) "Sign in with your warden administrator credentials" else "Sign in with your registered resident credentials",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -151,7 +225,8 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email Address") },
+                    label = { Text(if (selectedRole == UserRole.WARDEN) "Warden Email Address" else "Resident Email Address") },
+                    placeholder = { Text(if (selectedRole == UserRole.WARDEN) "e.g. warden@hostel.edu" else "e.g. resident@email.com") },
                     leadingIcon = {
                         Icon(Icons.Outlined.Email, contentDescription = null, tint = WarmTaupe)
                     },
@@ -161,12 +236,13 @@ fun LoginScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
                     label = { Text("Password") },
+                    placeholder = { Text("Enter your account password") },
                     leadingIcon = {
                         Icon(Icons.Outlined.Lock, contentDescription = null, tint = WarmTaupe)
                     },
@@ -209,20 +285,22 @@ fun LoginScreen(
                 Button(
                     onClick = {
                         authViewModel.clearMessages()
-                        authViewModel.login(email, password)
+                        authViewModel.login(email, password, expectedRole = selectedRole)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedRole == UserRole.WARDEN) MutedTerracotta else EspressoBrown
+                    ),
                     enabled = !isLoading
                 ) {
                     if (isLoading) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp), color = SoftWhite)
                     } else {
                         Text(
-                            text = "Sign In",
+                            text = if (selectedRole == UserRole.WARDEN) "Sign In as Warden" else "Sign In as Resident",
                             style = MaterialTheme.typography.titleMedium,
                             color = SoftWhite
                         )
@@ -230,95 +308,22 @@ fun LoginScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
-            // Demo Accounts Section
-            Text(
-                text = "Instant Demo Access",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                // Student Demo Button
-                OutlinedButton(
-                    onClick = {
-                        authViewModel.clearMessages()
-                        authViewModel.loginAsDemo(UserRole.STUDENT)
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.5f)),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = SoftWhite
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.School,
-                        contentDescription = null,
-                        tint = EspressoBrown,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "Student Demo",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = EspressoBrown
-                    )
-                }
-
-                // Warden Demo Button
-                OutlinedButton(
-                    onClick = {
-                        authViewModel.clearMessages()
-                        authViewModel.loginAsDemo(UserRole.WARDEN)
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.5f)),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = SoftWhite
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AdminPanelSettings,
-                        contentDescription = null,
-                        tint = MutedTerracotta,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "Warden Demo",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MutedTerracotta
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // New Resident Registration Link
+            // Registration Link
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "New hostel resident?",
+                    text = if (selectedRole == UserRole.WARDEN) "Need to register as a Warden?" else "Don't have an account?",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 TextButton(onClick = onNavigateToRegister) {
                     Text(
-                        text = "Register Here",
+                        text = if (selectedRole == UserRole.WARDEN) "Register Warden Account" else "Register Resident",
                         style = MaterialTheme.typography.labelLarge,
-                        color = EspressoBrown,
+                        color = if (selectedRole == UserRole.WARDEN) MutedTerracotta else EspressoBrown,
                         fontWeight = FontWeight.Bold
                     )
                 }

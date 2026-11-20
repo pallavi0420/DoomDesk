@@ -2,19 +2,20 @@ package com.dormdesk.app.ui.profile
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.HomeWork
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +37,9 @@ fun ProfileScreen(
     onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showDeleteAccountDialog by remember { mutableStateOf(false) }
+    var showPrivacyPolicyDialog by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -51,7 +55,7 @@ fun ProfileScreen(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
-                .background(EspressoBrown),
+                .background(if (currentUser.isWarden) MutedTerracotta else EspressoBrown),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -89,71 +93,60 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Resident Details Card
+        // Resident / Warden Details Card
         DormDeskCard(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "Account Details",
+                text = if (currentUser.isWarden) "Warden Official Details" else "Resident Account Details",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = EspressoBrown
             )
             Spacer(modifier = Modifier.height(14.dp))
 
-            ProfileInfoRow(icon = Icons.Outlined.Badge, label = "ID Number", value = currentUser.studentId)
+            ProfileInfoRow(
+                icon = Icons.Outlined.Badge,
+                label = if (currentUser.isWarden) "Staff ID" else "Student ID",
+                value = currentUser.studentId
+            )
             ProfileInfoRow(icon = Icons.Outlined.Email, label = "Email", value = currentUser.email)
             ProfileInfoRow(icon = Icons.Outlined.Phone, label = "Phone", value = currentUser.phone)
             ProfileInfoRow(icon = Icons.Outlined.Apartment, label = "Hostel", value = currentUser.hostel)
-            ProfileInfoRow(icon = Icons.Outlined.MeetingRoom, label = "Room", value = "${currentUser.block}, Room ${currentUser.roomNumber}")
+            ProfileInfoRow(
+                icon = Icons.Outlined.MeetingRoom,
+                label = if (currentUser.isWarden) "Office" else "Room",
+                value = "${currentUser.block}, ${if (currentUser.isWarden) "Office" else "Room"} ${currentUser.roomNumber}"
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Quick Role Switch Card for Evaluation
+        // Privacy & Account Data Safety Card (Play Store Requirement)
         DormDeskCard(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = "Role Switcher (Testing)",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = EspressoBrown
-            )
-            Text(
-                text = "Quickly test Student vs Warden perspectives with seeded demo data",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showPrivacyPolicyDialog = true }
+                    .padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                OutlinedButton(
-                    onClick = { authViewModel.loginAsDemo(UserRole.STUDENT) },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = if (currentUser.isStudent) EspressoBrown.copy(alpha = 0.08f) else Color.Transparent
-                    ),
-                    border = BorderStroke(1.dp, if (currentUser.isStudent) EspressoBrown else BorderLight),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Icon(Icons.Default.School, contentDescription = null, modifier = Modifier.size(16.dp), tint = EspressoBrown)
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Student", color = EspressoBrown, fontSize = 12.sp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Outlined.Shield, contentDescription = null, tint = SageGreen, modifier = Modifier.size(20.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(
+                            text = "Privacy & Data Safety Policy",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "Review how your data & tickets are handled",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
-
-                OutlinedButton(
-                    onClick = { authViewModel.loginAsDemo(UserRole.WARDEN) },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = if (currentUser.isWarden) MutedTerracotta.copy(alpha = 0.08f) else Color.Transparent
-                    ),
-                    border = BorderStroke(1.dp, if (currentUser.isWarden) MutedTerracotta else BorderLight),
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-                    Icon(Icons.Default.AdminPanelSettings, contentDescription = null, modifier = Modifier.size(16.dp), tint = MutedTerracotta)
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Warden", color = MutedTerracotta, fontSize = 12.sp)
-                }
+                Icon(Icons.Outlined.ChevronRight, contentDescription = null, tint = WarmTaupe)
             }
         }
 
@@ -193,15 +186,106 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent.copy(alpha = 0.12f), contentColor = StatusUrgent),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = EspressoBrown.copy(alpha = 0.1f),
+                contentColor = EspressoBrown
+            ),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Icon(Icons.Filled.ExitToApp, contentDescription = null, modifier = Modifier.size(18.dp))
+            Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(modifier = Modifier.width(8.dp))
             Text("Sign Out", fontWeight = FontWeight.SemiBold)
         }
 
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Delete Account Button (Play Store Policy Compliant)
+        OutlinedButton(
+            onClick = { showDeleteAccountDialog = true },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = StatusUrgent
+            ),
+            border = BorderStroke(1.dp, StatusUrgent.copy(alpha = 0.5f)),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Icon(Icons.Outlined.DeleteForever, contentDescription = null, modifier = Modifier.size(18.dp), tint = StatusUrgent)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Delete Account", fontWeight = FontWeight.SemiBold, color = StatusUrgent)
+        }
+
         Spacer(modifier = Modifier.height(80.dp))
+    }
+
+    // Delete Account Dialog
+    if (showDeleteAccountDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteAccountDialog = false },
+            title = {
+                Text(
+                    text = "Delete Account Permanently?",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = StatusUrgent
+                )
+            },
+            text = {
+                Text(
+                    text = "Are you sure you want to delete your ${if (currentUser.isWarden) "Warden" else "Resident"} account? All associated personal records, preferences, and session data will be permanently removed. This action cannot be reversed.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDeleteAccountDialog = false
+                        authViewModel.deleteAccount(onComplete = onLogout)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent)
+                ) {
+                    Text("Delete Account", color = SoftWhite)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteAccountDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    // Privacy Policy Dialog
+    if (showPrivacyPolicyDialog) {
+        AlertDialog(
+            onDismissRequest = { showPrivacyPolicyDialog = false },
+            title = {
+                Text("DormDesk Privacy & Data Safety", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            },
+            text = {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Text(
+                        text = "1. Information Collection & Usage\n" +
+                                "DormDesk collects resident identity details (name, room, registration ID) solely to facilitate hostel complaint tracking, maintenance verification, and administrative notice bulletins.\n\n" +
+                                "2. Account Deletion & Data Retention\n" +
+                                "In full compliance with Google Play Store policies, users have complete rights to delete their profile and associated data directly within the application via the 'Delete Account' button.\n\n" +
+                                "3. Security & Safety\n" +
+                                "We do not sell personal data to third parties. All communication between residents and wardens remains strictly confidential within the hostel administration system.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showPrivacyPolicyDialog = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                ) {
+                    Text("Close", color = SoftWhite)
+                }
+            }
+        )
     }
 }
 

@@ -66,6 +66,9 @@ fun ComplaintDetailScreen(
     var showAdminCloseDialog by remember { mutableStateOf(false) }
     var adminCloseReasonInput by remember { mutableStateOf("") }
 
+    var showWardenFeedbackDialog by remember { mutableStateOf(false) }
+    var wardenFeedbackInput by remember { mutableStateOf("") }
+
     Scaffold(
         topBar = {
             DormDeskTopBar(
@@ -219,12 +222,33 @@ fun ComplaintDetailScreen(
                     }
 
                     if (complaint.remarks.isNotBlank()) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Warden Remarks: ${complaint.remarks}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(MutedTerracotta.copy(alpha = 0.08f))
+                                .padding(10.dp)
+                        ) {
+                            Column {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Outlined.RateReview, contentDescription = null, tint = MutedTerracotta, modifier = Modifier.size(16.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "Official Warden Feedback / Remarks",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MutedTerracotta
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = complaint.remarks,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
                     }
 
                     if (complaint.resolutionNotes.isNotBlank()) {
@@ -333,25 +357,97 @@ fun ComplaintDetailScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            // Assign Technician
-                            Button(
-                                onClick = {
-                                    staffNameInput = complaint.assignedStaffName
-                                    showAssignDialog = true
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Icon(Icons.Outlined.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp))
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(if (complaint.assignedStaffName.isBlank()) "Assign Maintenance Staff" else "Reassign Staff (${complaint.assignedStaffName})")
+                            // Quick Action based on current stage
+                            when (complaint.status) {
+                                ComplaintStatus.SUBMITTED -> {
+                                    Button(
+                                        onClick = {
+                                            complaintViewModel.updateStatus(
+                                                complaintId,
+                                                ComplaintStatus.RECEIVED,
+                                                "Complaint received and reviewed by Warden administration."
+                                            )
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text("Mark as Received by Warden")
+                                    }
+                                }
+                                ComplaintStatus.RECEIVED -> {
+                                    Button(
+                                        onClick = {
+                                            staffNameInput = complaint.assignedStaffName
+                                            showAssignDialog = true
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Outlined.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text("Assign Maintenance Technician")
+                                    }
+                                }
+                                ComplaintStatus.ASSIGNED -> {
+                                    Button(
+                                        onClick = {
+                                            complaintViewModel.updateStatus(
+                                                complaintId,
+                                                ComplaintStatus.IN_PROGRESS,
+                                                "Technician ${complaint.assignedStaffName} commenced on-site repair."
+                                            )
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = StatusInProgress),
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Outlined.Build, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text("Mark Work In Progress")
+                                    }
+                                }
+                                ComplaintStatus.IN_PROGRESS -> {
+                                    Button(
+                                        onClick = {
+                                            resolutionNotesInput = complaint.resolutionNotes
+                                            showResolutionNotesDialog = true
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = SageGreen),
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Outlined.Check, contentDescription = null, modifier = Modifier.size(18.dp))
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text("Record Resolution & Update")
+                                    }
+                                }
+                                else -> {}
                             }
 
-                            // Update Status
+                            // 1. Submit Feedback / Remarks on Complaint
+                            Button(
+                                onClick = {
+                                    wardenFeedbackInput = complaint.remarks
+                                    showWardenFeedbackDialog = true
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(containerColor = MutedTerracotta),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Icon(Icons.Outlined.RateReview, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Submit Warden Feedback / Remarks")
+                            }
+
+                            // 2. Update Status
                             OutlinedButton(
                                 onClick = {
                                     selectedNewStatus = complaint.status
+                                    statusRemarkInput = ""
                                     showUpdateStatusDialog = true
                                 },
                                 modifier = Modifier.fillMaxWidth(),
@@ -363,7 +459,23 @@ fun ComplaintDetailScreen(
                                 Text("Update Status (${complaint.status.displayName})", color = EspressoBrown)
                             }
 
-                            // Add Resolution Notes
+                            // 3. Assign / Reassign Staff
+                            OutlinedButton(
+                                onClick = {
+                                    staffNameInput = complaint.assignedStaffName
+                                    staffRemarkInput = ""
+                                    showAssignDialog = true
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(10.dp),
+                                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.5f))
+                            ) {
+                                Icon(Icons.Outlined.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp), tint = EspressoBrown)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(if (complaint.assignedStaffName.isBlank()) "Assign Maintenance Staff" else "Reassign Staff (${complaint.assignedStaffName})", color = EspressoBrown)
+                            }
+
+                            // 4. Add Resolution Notes
                             OutlinedButton(
                                 onClick = {
                                     resolutionNotesInput = complaint.resolutionNotes
@@ -378,7 +490,7 @@ fun ComplaintDetailScreen(
                                 Text("Record Resolution Notes", color = SageGreen)
                             }
 
-                            // Administrative Close
+                            // 5. Administrative Close
                             if (!complaint.isClosed) {
                                 TextButton(
                                     onClick = { showAdminCloseDialog = true },
@@ -445,33 +557,46 @@ fun ComplaintDetailScreen(
     if (showUpdateStatusDialog) {
         AlertDialog(
             onDismissRequest = { showUpdateStatusDialog = false },
-            title = { Text("Update Complaint Status", style = MaterialTheme.typography.titleMedium) },
+            title = { Text("Update Complaint Status", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold) },
             text = {
-                Column {
-                    Text("Select new progress stage:", style = MaterialTheme.typography.bodySmall)
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Text("Select new progress stage for #${complaint?.complaintId ?: complaintId}:", style = MaterialTheme.typography.bodySmall)
                     Spacer(modifier = Modifier.height(10.dp))
                     ComplaintStatus.values().forEach { st ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                        Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { selectedNewStatus = st }
-                                .padding(vertical = 4.dp)
+                                .padding(vertical = 3.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable { selectedNewStatus = st },
+                            color = if (selectedNewStatus == st) st.badgeColor.copy(alpha = 0.12f) else Color.Transparent,
+                            border = BorderStroke(1.dp, if (selectedNewStatus == st) st.badgeColor else BorderLight.copy(alpha = 0.4f))
                         ) {
-                            RadioButton(
-                                selected = selectedNewStatus == st,
-                                onClick = { selectedNewStatus = st }
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(st.displayName, style = MaterialTheme.typography.bodyMedium)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 8.dp, vertical = 6.dp)
+                            ) {
+                                RadioButton(
+                                    selected = selectedNewStatus == st,
+                                    onClick = { selectedNewStatus = st }
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = st.displayName,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = if (selectedNewStatus == st) FontWeight.Bold else FontWeight.Normal
+                                )
+                            }
                         }
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
                     OutlinedTextField(
                         value = statusRemarkInput,
                         onValueChange = { statusRemarkInput = it },
-                        label = { Text("Status Change Remark") },
-                        placeholder = { Text("Notes on progress...") },
+                        label = { Text("Progress Update Remark (Optional)") },
+                        placeholder = { Text("e.g. Parts arrived, dispatched to Room 204") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -485,11 +610,58 @@ fun ComplaintDetailScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
                 ) {
-                    Text("Update", color = SoftWhite)
+                    Text("Update Status", color = SoftWhite)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showUpdateStatusDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
+
+    // Dialog: Submit Warden Feedback / Remarks on Complaint
+    if (showWardenFeedbackDialog) {
+        AlertDialog(
+            onDismissRequest = { showWardenFeedbackDialog = false },
+            title = {
+                Text("Submit Warden Feedback / Remarks", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            },
+            text = {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    Text(
+                        "Add official administrative feedback, inspection updates, or action notes for ticket #${complaint?.complaintId ?: complaintId}:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = wardenFeedbackInput,
+                        onValueChange = { wardenFeedbackInput = it },
+                        label = { Text("Official Remarks / Feedback *") },
+                        placeholder = { Text("e.g. Inspected fixture. Electrician Prakash assigned to replace switchboard by 4 PM.") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(130.dp),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (wardenFeedbackInput.isNotBlank()) {
+                            complaintViewModel.addRemarks(complaintId, wardenFeedbackInput)
+                            showWardenFeedbackDialog = false
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MutedTerracotta),
+                    enabled = wardenFeedbackInput.isNotBlank()
+                ) {
+                    Text("Submit Feedback", color = SoftWhite)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showWardenFeedbackDialog = false }) { Text("Cancel") }
             }
         )
     }

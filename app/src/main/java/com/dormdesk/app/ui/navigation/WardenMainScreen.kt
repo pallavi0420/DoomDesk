@@ -2,6 +2,8 @@ package com.dormdesk.app.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Assignment
+import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -22,7 +24,7 @@ import com.dormdesk.app.viewmodel.*
 
 sealed class WardenTab(val title: String, val selectedIcon: ImageVector, val unselectedIcon: ImageVector) {
     object Dashboard : WardenTab("Dashboard", Icons.Filled.Dashboard, Icons.Outlined.Dashboard)
-    object Complaints : WardenTab("Complaints", Icons.Filled.Assignment, Icons.Outlined.Assignment)
+    object Complaints : WardenTab("Complaints", Icons.AutoMirrored.Filled.Assignment, Icons.AutoMirrored.Outlined.Assignment)
     object Feedback : WardenTab("Feedback", Icons.Filled.RateReview, Icons.Outlined.RateReview)
     object Notices : WardenTab("Notices", Icons.Filled.Campaign, Icons.Outlined.Campaign)
     object Profile : WardenTab("Profile", Icons.Filled.Person, Icons.Outlined.Person)
@@ -99,6 +101,13 @@ fun WardenMainScreen(
                     onNavigateToComplaintDetail = onNavigateToComplaintDetail,
                     onNavigateToFeedback = { selectedTab = WardenTab.Feedback },
                     onNavigateToAnnouncements = { selectedTab = WardenTab.Notices },
+                    onLogout = {
+                        authViewModel.logout()
+                        onLogout()
+                    },
+                    onDeleteAccount = {
+                        authViewModel.deleteAccount(onComplete = onLogout)
+                    },
                     modifier = Modifier.padding(innerPadding)
                 )
             }

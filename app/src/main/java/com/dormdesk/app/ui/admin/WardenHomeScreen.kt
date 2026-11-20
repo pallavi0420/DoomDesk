@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -37,8 +38,13 @@ fun WardenHomeScreen(
     onNavigateToComplaintDetail: (String) -> Unit,
     onNavigateToFeedback: () -> Unit,
     onNavigateToAnnouncements: () -> Unit,
+    onLogout: () -> Unit = {},
+    onDeleteAccount: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    var showMenu by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
     val totalComplaints = complaints.size
     val pendingComplaints = complaints.count { it.status == ComplaintStatus.SUBMITTED || it.status == ComplaintStatus.RECEIVED }
     val inProgressComplaints = complaints.count { it.status == ComplaintStatus.ASSIGNED || it.status == ComplaintStatus.IN_PROGRESS || it.status == ComplaintStatus.RESOLUTION_UPDATED }
@@ -111,20 +117,81 @@ fun WardenHomeScreen(
                         }
                     }
 
-                    // Role Badge
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MutedTerracotta.copy(alpha = 0.15f))
-                            .padding(horizontal = 10.dp, vertical = 6.dp)
-                    ) {
-                        Text(
-                            text = "WARDEN",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MutedTerracotta
-                        )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        // Role Badge
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(MutedTerracotta.copy(alpha = 0.15f))
+                                .padding(horizontal = 10.dp, vertical = 6.dp)
+                        ) {
+                            Text(
+                                text = "WARDEN",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MutedTerracotta
+                            )
+                        }
+
+                        // More Actions Menu
+                        Box {
+                            IconButton(onClick = { showMenu = true }) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "Warden Options", tint = EspressoBrown)
+                            }
+
+                            DropdownMenu(
+                                expanded = showMenu,
+                                onDismissRequest = { showMenu = false }
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Sign Out") },
+                                    leadingIcon = {
+                                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null, tint = EspressoBrown)
+                                    },
+                                    onClick = {
+                                        showMenu = false
+                                        onLogout()
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Delete Account", color = StatusUrgent) },
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.DeleteForever, contentDescription = null, tint = StatusUrgent)
+                                    },
+                                    onClick = {
+                                        showMenu = false
+                                        showDeleteDialog = true
+                                    }
+                                )
+                            }
+                        }
                     }
+                }
+
+                if (showDeleteDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDeleteDialog = false },
+                        title = {
+                            Text("Delete Warden Account?", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = StatusUrgent)
+                        },
+                        text = {
+                            Text("Are you sure you want to delete your Warden administrator account? All session credentials and privileges will be permanently removed.")
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    showDeleteDialog = false
+                                    onDeleteAccount()
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent)
+                            ) {
+                                Text("Delete Permanently", color = SoftWhite)
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") }
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
