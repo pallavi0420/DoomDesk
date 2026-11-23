@@ -78,8 +78,8 @@ fun AnnouncementListScreen(
                         editingAnnouncement = null
                         showCreateDialog = true
                     },
-                    containerColor = EspressoBrown,
-                    contentColor = SoftWhite,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(
@@ -125,11 +125,11 @@ fun AnnouncementListScreen(
                     value = searchQuery,
                     onValueChange = { announcementViewModel.setSearchQuery(it) },
                     placeholder = { Text("Search notices...") },
-                    leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { announcementViewModel.setSearchQuery("") }) {
-                                Icon(Icons.Default.Close, contentDescription = "Clear", tint = WarmTaupe)
+                                Icon(Icons.Default.Close, contentDescription = "Clear", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     },
@@ -151,14 +151,14 @@ fun AnnouncementListScreen(
                         selected = selectedCategory == null,
                         onClick = { announcementViewModel.setCategory(null) },
                         label = { Text("All Notices") },
-                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = EspressoBrown, selectedLabelColor = SoftWhite)
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.primary, selectedLabelColor = MaterialTheme.colorScheme.onPrimary)
                     )
                     AnnouncementCategory.values().forEach { cat ->
                         FilterChip(
                             selected = selectedCategory == cat,
                             onClick = { announcementViewModel.setCategory(cat) },
                             label = { Text(cat.displayName) },
-                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = EspressoBrown, selectedLabelColor = SoftWhite)
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.primary, selectedLabelColor = MaterialTheme.colorScheme.onPrimary)
                         )
                     }
                 }
@@ -185,7 +185,7 @@ fun AnnouncementListScreen(
                 ) {
                     items(announcements, key = { it.announcementId }) { notice ->
                         DormDeskCard(
-                            backgroundColor = if (notice.isPinned) SoftWhite else MaterialTheme.colorScheme.surface,
+                            backgroundColor = MaterialTheme.colorScheme.surface,
                             borderColor = if (notice.isPinned) MutedTerracotta.copy(alpha = 0.5f) else MaterialTheme.colorScheme.outline.copy(alpha = 0.4f)
                         ) {
                             Row(
@@ -244,7 +244,7 @@ fun AnnouncementListScreen(
                                 Text(
                                     text = "${notice.createdBy} • ${dateFormat.format(Date(notice.createdAt))}",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = WarmTaupe,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontSize = 11.sp
                                 )
 
@@ -258,7 +258,7 @@ fun AnnouncementListScreen(
                                             Icon(
                                                 imageVector = if (notice.isPinned) Icons.Default.PushPin else Icons.Outlined.PushPin,
                                                 contentDescription = "Pin/Unpin",
-                                                tint = if (notice.isPinned) MutedTerracotta else WarmTaupe,
+                                                tint = if (notice.isPinned) MutedTerracotta else MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.size(16.dp)
                                             )
                                         }
@@ -278,7 +278,7 @@ fun AnnouncementListScreen(
                                             Icon(
                                                 imageVector = Icons.Outlined.Edit,
                                                 contentDescription = "Edit",
-                                                tint = WarmTaupe,
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                                 modifier = Modifier.size(16.dp)
                                             )
                                         }
@@ -385,7 +385,7 @@ fun AnnouncementListScreen(
                                 Text(
                                     prio.displayName,
                                     fontSize = 11.sp,
-                                    color = if (sel) SoftWhite else MaterialTheme.colorScheme.onSurface,
+                                    color = if (sel) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                                     fontWeight = if (sel) FontWeight.Bold else FontWeight.Normal
                                 )
                             }
@@ -442,9 +442,9 @@ fun AnnouncementListScreen(
                         }
                         showCreateDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(if (editingAnnouncement != null) "Save Changes" else "Publish", color = SoftWhite)
+                    Text(if (editingAnnouncement != null) "Save Changes" else "Publish", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -467,7 +467,7 @@ fun AnnouncementListScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent)
                 ) {
-                    Text("Delete", color = SoftWhite)
+                    Text("Delete", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {

@@ -77,13 +77,13 @@ fun LoginScreen(
                 modifier = Modifier
                     .size(72.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(EspressoBrown),
+                    .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.HomeWork,
                     contentDescription = "DormDesk Logo",
-                    tint = SoftWhite,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(38.dp)
                 )
             }
@@ -94,7 +94,7 @@ fun LoginScreen(
                 text = "DormDesk",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = EspressoBrown
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Text(
@@ -111,7 +111,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.35f))
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
                 Row(modifier = Modifier.fillMaxWidth().padding(4.dp)) {
                     // Resident Tab
@@ -120,7 +120,7 @@ fun LoginScreen(
                             .weight(1f)
                             .clip(RoundedCornerShape(9.dp))
                             .clickable { selectedRole = UserRole.STUDENT },
-                        color = if (selectedRole == UserRole.STUDENT) EspressoBrown else Color.Transparent
+                        color = if (selectedRole == UserRole.STUDENT) MaterialTheme.colorScheme.primary else Color.Transparent
                     ) {
                         Row(
                             modifier = Modifier.padding(vertical = 10.dp),
@@ -131,14 +131,14 @@ fun LoginScreen(
                                 Icons.Default.School,
                                 contentDescription = null,
                                 modifier = Modifier.size(16.dp),
-                                tint = if (selectedRole == UserRole.STUDENT) SoftWhite else WarmTaupe
+                                tint = if (selectedRole == UserRole.STUDENT) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Resident Portal",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (selectedRole == UserRole.STUDENT) FontWeight.Bold else FontWeight.Normal,
-                                color = if (selectedRole == UserRole.STUDENT) SoftWhite else MaterialTheme.colorScheme.onSurface
+                                color = if (selectedRole == UserRole.STUDENT) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -149,7 +149,7 @@ fun LoginScreen(
                             .weight(1f)
                             .clip(RoundedCornerShape(9.dp))
                             .clickable { selectedRole = UserRole.WARDEN },
-                        color = if (selectedRole == UserRole.WARDEN) MutedTerracotta else Color.Transparent
+                        color = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.secondary else Color.Transparent
                     ) {
                         Row(
                             modifier = Modifier.padding(vertical = 10.dp),
@@ -160,14 +160,14 @@ fun LoginScreen(
                                 Icons.Default.AdminPanelSettings,
                                 contentDescription = null,
                                 modifier = Modifier.size(16.dp),
-                                tint = if (selectedRole == UserRole.WARDEN) SoftWhite else WarmTaupe
+                                tint = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Warden Portal",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (selectedRole == UserRole.WARDEN) FontWeight.Bold else FontWeight.Normal,
-                                color = if (selectedRole == UserRole.WARDEN) SoftWhite else MaterialTheme.colorScheme.onSurface
+                                color = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -228,7 +228,7 @@ fun LoginScreen(
                     label = { Text(if (selectedRole == UserRole.WARDEN) "Warden Email Address" else "Resident Email Address") },
                     placeholder = { Text(if (selectedRole == UserRole.WARDEN) "e.g. warden@hostel.edu" else "e.g. resident@email.com") },
                     leadingIcon = {
-                        Icon(Icons.Outlined.Email, contentDescription = null, tint = WarmTaupe)
+                        Icon(Icons.Outlined.Email, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
@@ -244,14 +244,14 @@ fun LoginScreen(
                     label = { Text("Password") },
                     placeholder = { Text("Enter your account password") },
                     leadingIcon = {
-                        Icon(Icons.Outlined.Lock, contentDescription = null, tint = WarmTaupe)
+                        Icon(Icons.Outlined.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     },
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
                                 imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                                 contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                                tint = WarmTaupe
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     },
@@ -292,17 +292,17 @@ fun LoginScreen(
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (selectedRole == UserRole.WARDEN) MutedTerracotta else EspressoBrown
+                        containerColor = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.secondary else EspressoBrown
                     ),
                     enabled = !isLoading
                 ) {
                     if (isLoading) {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp), color = SoftWhite)
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary)
                     } else {
                         Text(
                             text = if (selectedRole == UserRole.WARDEN) "Sign In as Warden" else "Sign In as Resident",
                             style = MaterialTheme.typography.titleMedium,
-                            color = SoftWhite
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -323,7 +323,7 @@ fun LoginScreen(
                     Text(
                         text = if (selectedRole == UserRole.WARDEN) "Register Warden Account" else "Register Resident",
                         style = MaterialTheme.typography.labelLarge,
-                        color = if (selectedRole == UserRole.WARDEN) MutedTerracotta else EspressoBrown,
+                        color = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.secondary else EspressoBrown,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -360,9 +360,9 @@ fun LoginScreen(
                         authViewModel.resetPassword(forgotEmail)
                         showForgotPasswordDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Send Reset Link", color = SoftWhite)
+                    Text("Send Reset Link", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {

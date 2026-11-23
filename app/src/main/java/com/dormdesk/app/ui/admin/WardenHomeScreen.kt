@@ -91,13 +91,13 @@ fun WardenHomeScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(CircleShape)
-                                .background(EspressoBrown),
+                                .background(MaterialTheme.colorScheme.primary),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.AdminPanelSettings,
                                 contentDescription = null,
-                                tint = SoftWhite,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -136,7 +136,7 @@ fun WardenHomeScreen(
                         // More Actions Menu
                         Box {
                             IconButton(onClick = { showMenu = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "Warden Options", tint = EspressoBrown)
+                                Icon(Icons.Default.MoreVert, contentDescription = "Warden Options", tint = MaterialTheme.colorScheme.primary)
                             }
 
                             DropdownMenu(
@@ -146,7 +146,7 @@ fun WardenHomeScreen(
                                 DropdownMenuItem(
                                     text = { Text("Sign Out") },
                                     leadingIcon = {
-                                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null, tint = EspressoBrown)
+                                        Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                                     },
                                     onClick = {
                                         showMenu = false
@@ -185,7 +185,7 @@ fun WardenHomeScreen(
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent)
                             ) {
-                                Text("Delete Permanently", color = SoftWhite)
+                                Text("Delete Permanently", color = MaterialTheme.colorScheme.onPrimary)
                             }
                         },
                         dismissButton = {
@@ -224,7 +224,7 @@ fun WardenHomeScreen(
                         title = "Total Active",
                         count = "$totalComplaints",
                         icon = Icons.Outlined.Folder,
-                        iconTint = EspressoBrown,
+                        iconTint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f),
                         onClick = onNavigateToComplaints
                     )
@@ -285,7 +285,7 @@ fun WardenHomeScreen(
                         text = "Status Distribution",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = EspressoBrown
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -355,12 +355,12 @@ fun WardenHomeScreen(
                                 String.format(Locale.getDefault(), "%.1f / 5.0", avgSatisfaction),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = EspressoBrown
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                         Column(horizontalAlignment = Alignment.End) {
                             Text("Avg Resolution Time", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text("~ 18 Hours", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = EspressoBrown)
+                            Text("~ 18 Hours", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                         }
                     }
                 }
@@ -382,7 +382,7 @@ fun WardenHomeScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     TextButton(onClick = onNavigateToComplaints) {
-                        Text("Manage All", color = EspressoBrown, style = MaterialTheme.typography.labelMedium)
+                        Text("Manage All", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium)
                     }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
@@ -402,7 +402,7 @@ fun WardenHomeScreen(
                                 text = "#${complaint.complaintId}",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = WarmTaupe
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             PriorityBadge(priority = complaint.priority)
@@ -475,7 +475,7 @@ fun WardenHomeScreen(
                                 text = fb.displayedAuthor,
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = EspressoBrown
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             StarRatingBar(rating = fb.rating, starSize = 14)
                         }

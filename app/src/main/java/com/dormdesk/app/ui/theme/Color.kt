@@ -2,28 +2,57 @@ package com.dormdesk.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// DormDesk Brand Identity Colors
-val WarmIvory = Color(0xFFF7F5F0)       // Background Light
-val EspressoBrown = Color(0xFF40352F)   // Primary Brand & Strong Text
-val MutedTerracotta = Color(0xFFB87962) // Primary Accent & Action Color
-val WarmTaupe = Color(0xFFA89B8E)       // Secondary Accent & Neutral Borders
-val SoftWhite = Color(0xFFFFFEFC)       // Card & Surface Light
-val DeepCharcoal = Color(0xFF302D2A)    // Dark Mode Background & Deep Accent
-val SageGreen = Color(0xFF7D927B)       // Resolved / Success State
+// ==========================================
+// Modern, High-Contrast & Accessible Palette
+// ==========================================
 
-// Status Colors
-val StatusPending = Color(0xFFD69E2E)      // Warm Amber
-val StatusAssigned = Color(0xFF4A7C9B)     // Slate Blue
-val StatusInProgress = Color(0xFF6B7280)   // Cool Neutral / Process
-val StatusResolved = Color(0xFF7D927B)     // Sage Green
-val StatusClosed = Color(0xFF8C7D70)       // Taupe Gray
-val StatusUrgent = Color(0xFFC53030)       // Crimson Red
+// Primary Brand Accents
+val BrandPrimaryLight = Color(0xFF1E3A8A)       // Deep Royal Navy - authoritative & clear
+val BrandPrimaryDark = Color(0xFF60A5FA)        // Vibrant Sky Blue - crisp on dark surfaces
+val BrandSecondaryLight = Color(0xFFC2410C)     // Terracotta Warm Accent - high contrast
+val BrandSecondaryDark = Color(0xFFFB923C)      // Warm Amber/Orange accent for dark mode
 
-// Functional Neutrals
-val NeutralLightSurface = Color(0xFFF0ECE4)
-val NeutralDarkSurface = Color(0xFF262321)
-val NeutralDarkCard = Color(0xFF36322F)
-val BorderLight = Color(0xFFE4DFD7)
-val BorderDark = Color(0xFF443F3C)
-val TextMuted = Color(0xFF7A7067)
-val TextMutedLight = Color(0xFFA59B91)
+// Light Theme Neutrals (Crisp & High Contrast)
+val BackgroundLight = Color(0xFFF8FAFC)         // Clean off-white canvas
+val SurfaceLight = Color(0xFFFFFFFF)            // Pure white card surfaces
+val SurfaceVariantLight = Color(0xFFF1F5F9)     // Subtle slate tint for containers
+val TextPrimaryLight = Color(0xFF0F172A)        // Deep Slate 900 - 100% sharp readability
+val TextSecondaryLight = Color(0xFF475569)      // Slate 600 - WCAG AA compliant (>4.5:1 ratio)
+val BorderLightContrast = Color(0xFFE2E8F0)     // Clean defined border
+
+// Dark Theme Neutrals (Refined OLED/Deep Slate)
+val BackgroundDark = Color(0xFF0B0F19)          // Deep slate navy canvas
+val SurfaceDark = Color(0xFF161F33)             // Elevated sleek card surface
+val SurfaceVariantDark = Color(0xFF1E293B)      // Secondary dark surface
+val TextPrimaryDark = Color(0xFFF8FAFC)         // Crisp pure white/slate
+val TextSecondaryDark = Color(0xFFCBD5E1)       // Soft readable platinum
+val BorderDarkContrast = Color(0xFF2E3D59)      // Subtle dark mode border
+
+// Status & Semantic Colors (High Visibility)
+val StatusPending = Color(0xFFD97706)           // Amber 600
+val StatusAssigned = Color(0xFF0284C7)          // Sky 600
+val StatusInProgress = Color(0xFF4F46E5)        // Indigo 600
+val StatusResolved = Color(0xFF16A34A)          // Green 600
+val StatusClosed = Color(0xFF64748B)            // Slate 500
+val StatusUrgent = Color(0xFFDC2626)            // Red 600
+val StatusSuccess = Color(0xFF16A34A)
+
+// ==========================================
+// Backward-Compatibility Aliases
+// (Ensures legacy references compile and look great)
+// ==========================================
+val WarmIvory = BackgroundLight
+val EspressoBrown = TextPrimaryLight
+val MutedTerracotta = BrandSecondaryLight
+val WarmTaupe = TextSecondaryLight
+val SoftWhite = SurfaceLight
+val DeepCharcoal = BackgroundDark
+val SageGreen = StatusResolved
+
+val NeutralLightSurface = SurfaceVariantLight
+val NeutralDarkSurface = SurfaceVariantDark
+val NeutralDarkCard = SurfaceDark
+val BorderLight = BorderLightContrast
+val BorderDark = BorderDarkContrast
+val TextMuted = TextSecondaryLight
+val TextMutedLight = TextSecondaryDark

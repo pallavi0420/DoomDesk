@@ -101,10 +101,10 @@ fun NotificationCenterScreen(
                     }
 
                     val iconTint = when (item.type) {
-                        NotificationType.COMPLAINT -> if (!item.isRead) MutedTerracotta else WarmTaupe
-                        NotificationType.ANNOUNCEMENT -> if (!item.isRead) StatusAssigned else WarmTaupe
-                        NotificationType.FEEDBACK -> if (!item.isRead) SageGreen else WarmTaupe
-                        NotificationType.SYSTEM -> WarmTaupe
+                        NotificationType.COMPLAINT -> if (!item.isRead) MutedTerracotta else MaterialTheme.colorScheme.onSurfaceVariant
+                        NotificationType.ANNOUNCEMENT -> if (!item.isRead) StatusAssigned else MaterialTheme.colorScheme.onSurfaceVariant
+                        NotificationType.FEEDBACK -> if (!item.isRead) SageGreen else MaterialTheme.colorScheme.onSurfaceVariant
+                        NotificationType.SYSTEM -> MaterialTheme.colorScheme.onSurfaceVariant
                     }
 
                     DormDeskCard(
@@ -121,7 +121,7 @@ fun NotificationCenterScreen(
                                 else -> {}
                             }
                         },
-                        backgroundColor = if (!item.isRead) SoftWhite else MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                        backgroundColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
                         borderColor = if (!item.isRead) MutedTerracotta.copy(alpha = 0.35f) else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                     ) {
                         Row(
@@ -175,7 +175,7 @@ fun NotificationCenterScreen(
                                 Text(
                                     text = dateFormat.format(Date(item.createdAt)),
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = WarmTaupe,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontSize = 11.sp
                                 )
                             }

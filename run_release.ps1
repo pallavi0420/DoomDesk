@@ -1,5 +1,9 @@
 ﻿# PowerShell script – build signed release AAB with JBR (Java 21)
-$jbr = 'C:\Program Files\Android\Android Studio\jbr'
+$possibleJbr = @(
+    'C:\Program Files\Android\Android Studio1\jbr',
+    'C:\Program Files\Android\Android Studio\jbr'
+)
+$jbr = $possibleJbr | Where-Object { Test-Path (Join-Path $_ 'bin\java.exe') } | Select-Object -First 1
 $javaExe = Join-Path $jbr 'bin\java.exe'
 
 if (-Not (Test-Path $javaExe)) {
@@ -10,4 +14,4 @@ if (-Not (Test-Path $javaExe)) {
 $env:JAVA_HOME = $jbr
 
 # Run Gradle wrapper JAR directly with JBR
-& $javaExe -jar .\gradle\wrapper\gradle-wrapper.jar clean bundleRelease --no-daemon --stacktrace
+& (Join-Path $jbr 'bin\java.exe') -jar .\gradle\wrapper\gradle-wrapper.jar bundleRelease --no-daemon --stacktrace

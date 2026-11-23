@@ -77,10 +77,10 @@ fun DormDeskAiScreen(
                             modifier = Modifier
                                 .size(36.dp)
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(EspressoBrown),
+                                .background(MaterialTheme.colorScheme.primary),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(Icons.Outlined.SmartToy, contentDescription = null, tint = SoftWhite, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Outlined.SmartToy, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(20.dp))
                         }
                         Spacer(modifier = Modifier.width(10.dp))
                         Column {
@@ -110,7 +110,7 @@ fun DormDeskAiScreen(
                 },
                 actions = {
                     IconButton(onClick = { chatbotViewModel.clearHistory() }) {
-                        Icon(Icons.Outlined.DeleteSweep, contentDescription = "Clear Chat", tint = WarmTaupe)
+                        Icon(Icons.Outlined.DeleteSweep, contentDescription = "Clear Chat", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
@@ -181,7 +181,7 @@ fun DormDeskAiScreen(
                             Text(
                                 text = question,
                                 style = MaterialTheme.typography.labelMedium,
-                                color = EspressoBrown,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                             )
                         }
@@ -228,12 +228,12 @@ fun DormDeskAiScreen(
                         modifier = Modifier
                             .size(44.dp)
                             .clip(CircleShape)
-                            .background(if (inputText.isNotBlank() && !isTyping) EspressoBrown else WarmTaupe.copy(alpha = 0.3f))
+                            .background(if (inputText.isNotBlank() && !isTyping) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = "Send",
-                            tint = SoftWhite,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(18.dp)
                         )
                     }
@@ -262,7 +262,7 @@ fun ChatMessageBubble(
                 bottomStart = if (isUser) 16.dp else 4.dp,
                 bottomEnd = if (isUser) 4.dp else 16.dp
             ),
-            color = if (isUser) EspressoBrown else SoftWhite,
+            color = if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
             border = if (!isUser) BorderStroke(1.dp, BorderLight) else null,
             shadowElevation = 0.dp,
             modifier = Modifier.widthIn(max = 300.dp)
@@ -289,7 +289,7 @@ fun ChatMessageBubble(
                 Text(
                     text = message.message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isUser) SoftWhite else MaterialTheme.colorScheme.onSurface,
+                    color = if (isUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                     lineHeight = 20.sp
                 )
 
@@ -307,11 +307,11 @@ fun ChatMessageBubble(
                     Button(
                         onClick = { onActionClick(message.suggestedActionRoute) },
                         shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                         modifier = Modifier.height(32.dp)
                     ) {
-                        Text(actionLabel, fontSize = 11.sp, color = SoftWhite)
+                        Text(actionLabel, fontSize = 11.sp, color = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
 
@@ -320,7 +320,7 @@ fun ChatMessageBubble(
                 Text(
                     text = dateFormat.format(Date(message.timestamp)),
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isUser) SoftWhite.copy(alpha = 0.7f) else WarmTaupe,
+                    color = if (isUser) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f) else MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 9.sp,
                     modifier = Modifier.align(Alignment.End)
                 )
@@ -347,8 +347,8 @@ fun TypingIndicator() {
 
     Surface(
         shape = RoundedCornerShape(14.dp),
-        color = SoftWhite,
-        border = BorderStroke(1.dp, BorderLight),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = Modifier.padding(start = 4.dp)
     ) {
         Row(
@@ -356,9 +356,9 @@ fun TypingIndicator() {
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(EspressoBrown.copy(alpha = alpha1)))
-            Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(EspressoBrown.copy(alpha = alpha2)))
-            Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(EspressoBrown.copy(alpha = alpha3)))
+            Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary.copy(alpha = alpha1)))
+            Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary.copy(alpha = alpha2)))
+            Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary.copy(alpha = alpha3)))
         }
     }
 }

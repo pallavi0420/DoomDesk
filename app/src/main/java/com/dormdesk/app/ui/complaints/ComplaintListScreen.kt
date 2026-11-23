@@ -66,8 +66,8 @@ fun ComplaintListScreen(
             if (currentUser.isStudent) {
                 FloatingActionButton(
                     onClick = onNavigateToRaiseComplaint,
-                    containerColor = EspressoBrown,
-                    contentColor = SoftWhite,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(
@@ -113,11 +113,11 @@ fun ComplaintListScreen(
                     value = searchQuery,
                     onValueChange = { complaintViewModel.setSearchQuery(it) },
                     placeholder = { Text("Search by ID, title, room, or issue...") },
-                    leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { complaintViewModel.setSearchQuery("") }) {
-                                Icon(Icons.Default.Close, contentDescription = "Clear search", tint = WarmTaupe)
+                                Icon(Icons.Default.Close, contentDescription = "Clear search", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     },
@@ -142,8 +142,8 @@ fun ComplaintListScreen(
                             onClick = { complaintViewModel.setFilter(filter) },
                             label = { Text(filter.displayName) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = EspressoBrown,
-                                selectedLabelColor = SoftWhite,
+                                selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
                                 containerColor = MaterialTheme.colorScheme.surface,
                                 labelColor = MaterialTheme.colorScheme.onSurface
                             ),
@@ -233,7 +233,7 @@ fun ComplaintListScreen(
                                         text = "#${complaint.complaintId}",
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.Bold,
-                                        color = WarmTaupe
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     PriorityBadge(priority = complaint.priority)
@@ -282,7 +282,7 @@ fun ComplaintListScreen(
                                     Text(
                                         text = " • ",
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = WarmTaupe
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         text = complaint.location,
@@ -296,7 +296,7 @@ fun ComplaintListScreen(
                                 Text(
                                     text = dateFormat.format(Date(complaint.createdAt)),
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = WarmTaupe
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
 

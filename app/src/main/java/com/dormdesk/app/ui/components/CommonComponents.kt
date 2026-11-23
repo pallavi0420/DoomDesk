@@ -231,7 +231,7 @@ fun StarRatingBar(
                 Icon(
                     imageVector = if (isFilled) Icons.Default.Star else Icons.Outlined.StarBorder,
                     contentDescription = "Star $i",
-                    tint = if (isFilled) StatusPending else WarmTaupe,
+                    tint = if (isFilled) StatusPending else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(starSize.dp)
                 )
             }
@@ -283,7 +283,7 @@ fun ComplaintTimelineView(
                             Icon(
                                 imageVector = Icons.Default.Check,
                                 contentDescription = null,
-                                tint = SoftWhite,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(14.dp)
                             )
                         } else {
@@ -363,7 +363,7 @@ fun EmptyStateView(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = WarmTaupe,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(32.dp)
             )
         }
@@ -386,10 +386,13 @@ fun EmptyStateView(
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = onActionClick,
-                colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text(text = actionButtonText, color = SoftWhite)
+                Text(text = actionButtonText, color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }

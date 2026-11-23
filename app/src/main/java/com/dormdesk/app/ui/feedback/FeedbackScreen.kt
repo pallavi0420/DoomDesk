@@ -96,7 +96,7 @@ fun FeedbackScreen(
             TabRow(
                 selectedTabIndex = selectedTab,
                 containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = EspressoBrown
+                contentColor = MaterialTheme.colorScheme.primary
             ) {
                 Tab(
                     selected = selectedTab == 0,
@@ -139,7 +139,7 @@ fun FeedbackScreen(
                         text = "Feedback Category",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = EspressoBrown
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -179,7 +179,7 @@ fun FeedbackScreen(
                         text = "Rating",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = EspressoBrown
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     StarRatingBar(
@@ -245,13 +245,13 @@ fun FeedbackScreen(
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     enabled = !isSubmitting
                 ) {
                     if (isSubmitting) {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp), color = SoftWhite)
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary)
                     } else {
-                        Text("Submit Feedback", style = MaterialTheme.typography.titleMedium, color = SoftWhite)
+                        Text("Submit Feedback", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
 
@@ -292,17 +292,17 @@ fun FeedbackScreen(
                                         text = item.category.displayName,
                                         style = MaterialTheme.typography.titleSmall,
                                         fontWeight = FontWeight.Bold,
-                                        color = EspressoBrown
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                     if (item.isAnonymous) {
                                         Spacer(modifier = Modifier.width(6.dp))
                                         Box(
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(4.dp))
-                                                .background(WarmTaupe.copy(alpha = 0.2f))
+                                                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                                                 .padding(horizontal = 6.dp, vertical = 2.dp)
                                         ) {
-                                            Text("Anonymous", fontSize = 9.sp, color = WarmTaupe)
+                                            Text("Anonymous", fontSize = 9.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                         }
                                     }
                                 }
@@ -322,7 +322,7 @@ fun FeedbackScreen(
                             Text(
                                 text = dateFormat.format(Date(item.createdAt)),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = WarmTaupe,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 11.sp
                             )
 

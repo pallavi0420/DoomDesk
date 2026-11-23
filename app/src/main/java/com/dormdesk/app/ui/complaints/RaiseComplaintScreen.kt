@@ -96,7 +96,7 @@ fun RaiseComplaintScreen(
                     text = "Issue Details",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = EspressoBrown
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -161,7 +161,7 @@ fun RaiseComplaintScreen(
                     ComplaintPriority.values().forEach { priority ->
                         val isSelected = selectedPriority == priority
                         val bg = if (isSelected) priority.badgeColor else MaterialTheme.colorScheme.surface
-                        val textCol = if (isSelected) SoftWhite else MaterialTheme.colorScheme.onSurface
+                        val textCol = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
 
                         Box(
                             modifier = Modifier
@@ -193,7 +193,7 @@ fun RaiseComplaintScreen(
                     onValueChange = { location = it },
                     label = { Text("Location / Room *") },
                     placeholder = { Text("Block B, Room 204") },
-                    leadingIcon = { Icon(Icons.Outlined.LocationOn, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     singleLine = true
@@ -220,7 +220,7 @@ fun RaiseComplaintScreen(
                     text = "Photograph (Optional)",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = EspressoBrown
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = "Attach an image to help the maintenance team assess tools required",
@@ -251,7 +251,7 @@ fun RaiseComplaintScreen(
                                 .padding(8.dp)
                                 .background(DeepCharcoal.copy(alpha = 0.65f), CircleShape)
                         ) {
-                            Icon(Icons.Default.Close, contentDescription = "Remove photo", tint = SoftWhite)
+                            Icon(Icons.Default.Close, contentDescription = "Remove photo", tint = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 } else {
@@ -266,11 +266,11 @@ fun RaiseComplaintScreen(
                                     .weight(1f)
                                     .height(42.dp),
                                 shape = RoundedCornerShape(8.dp),
-                                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.4f))
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                             ) {
                                 Icon(Icons.Outlined.PhotoCamera, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Photo ${idx + 1}", fontSize = 11.sp, color = EspressoBrown)
+                                Text("Photo ${idx + 1}", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface)
                             }
                         }
                     }
@@ -298,18 +298,18 @@ fun RaiseComplaintScreen(
                     .fillMaxWidth()
                     .height(52.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 enabled = !isSubmitting
             ) {
                 if (isSubmitting) {
-                    CircularProgressIndicator(modifier = Modifier.size(20.dp), color = SoftWhite)
+                    CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary)
                 } else {
-                    Icon(Icons.Default.Send, contentDescription = null, tint = SoftWhite, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Send, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Submit Complaint",
                         style = MaterialTheme.typography.titleMedium,
-                        color = SoftWhite
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

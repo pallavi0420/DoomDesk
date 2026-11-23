@@ -97,15 +97,15 @@ fun WardenFeedbackScreen(
                                 text = String.format(Locale.getDefault(), "%.1f", avgRating),
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = EspressoBrown
+                                color = MaterialTheme.colorScheme.onSurface
                             )
-                            Text(" / 5.0", style = MaterialTheme.typography.bodyMedium, color = WarmTaupe)
+                            Text(" / 5.0", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
 
                     Column(horizontalAlignment = Alignment.End) {
                         Text("Total Submissions", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text("${allFeedbacks.size}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = EspressoBrown)
+                        Text("${allFeedbacks.size}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
             }
@@ -123,14 +123,14 @@ fun WardenFeedbackScreen(
                     selected = selectedCategory == null,
                     onClick = { feedbackViewModel.setCategory(null) },
                     label = { Text("All Categories") },
-                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = EspressoBrown, selectedLabelColor = SoftWhite)
+                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.primary, selectedLabelColor = MaterialTheme.colorScheme.onPrimary)
                 )
                 FeedbackCategory.values().forEach { cat ->
                     FilterChip(
                         selected = selectedCategory == cat,
                         onClick = { feedbackViewModel.setCategory(cat) },
                         label = { Text(cat.displayName) },
-                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = EspressoBrown, selectedLabelColor = SoftWhite)
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.primary, selectedLabelColor = MaterialTheme.colorScheme.onPrimary)
                     )
                 }
             }
@@ -167,7 +167,7 @@ fun WardenFeedbackScreen(
                                     text = item.displayedAuthor,
                                     style = MaterialTheme.typography.titleSmall,
                                     fontWeight = FontWeight.Bold,
-                                    color = if (item.isAnonymous) WarmTaupe else EspressoBrown
+                                    color = if (item.isAnonymous) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
@@ -197,7 +197,7 @@ fun WardenFeedbackScreen(
                             Text(
                                 text = dateFormat.format(Date(item.createdAt)),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = WarmTaupe,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 11.sp
                             )
 
@@ -303,9 +303,9 @@ fun WardenFeedbackScreen(
                         }
                         respondingFeedback = null
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Publish Response", color = SoftWhite)
+                    Text("Publish Response", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {

@@ -155,7 +155,7 @@ fun ComplaintDetailScreen(
                             text = "Resident Attachment",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = EspressoBrown
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Box(
@@ -206,7 +206,7 @@ fun ComplaintDetailScreen(
                         text = "Maintenance & Administration",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = EspressoBrown
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
@@ -264,7 +264,7 @@ fun ComplaintDetailScreen(
                     if (complaint.studentRating > 0) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Resident Rating: ", style = MaterialTheme.typography.bodySmall, color = WarmTaupe)
+                            Text("Resident Rating: ", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             StarRatingBar(rating = complaint.studentRating, starSize = 16)
                         }
                     }
@@ -285,7 +285,7 @@ fun ComplaintDetailScreen(
                         text = "Lifecycle Progress Timeline",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = EspressoBrown
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(14.dp))
                     ComplaintTimelineView(currentStatus = complaint.status)
@@ -352,7 +352,7 @@ fun ComplaintDetailScreen(
                             text = "Administrative Controls",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = EspressoBrown
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(12.dp))
 
@@ -369,7 +369,7 @@ fun ComplaintDetailScreen(
                                             )
                                         },
                                         modifier = Modifier.fillMaxWidth(),
-                                        colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                         shape = RoundedCornerShape(10.dp)
                                     ) {
                                         Icon(Icons.Default.CheckCircle, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -384,7 +384,7 @@ fun ComplaintDetailScreen(
                                             showAssignDialog = true
                                         },
                                         modifier = Modifier.fillMaxWidth(),
-                                        colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown),
+                                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                         shape = RoundedCornerShape(10.dp)
                                     ) {
                                         Icon(Icons.Outlined.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -452,11 +452,11 @@ fun ComplaintDetailScreen(
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(10.dp),
-                                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.5f))
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                             ) {
-                                Icon(Icons.Outlined.Sync, contentDescription = null, modifier = Modifier.size(18.dp), tint = EspressoBrown)
+                                Icon(Icons.Outlined.Sync, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Update Status (${complaint.status.displayName})", color = EspressoBrown)
+                                Text("Update Status (${complaint.status.displayName})", color = MaterialTheme.colorScheme.onSurface)
                             }
 
                             // 3. Assign / Reassign Staff
@@ -468,11 +468,11 @@ fun ComplaintDetailScreen(
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(10.dp),
-                                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.5f))
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                             ) {
-                                Icon(Icons.Outlined.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp), tint = EspressoBrown)
+                                Icon(Icons.Outlined.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.primary)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(if (complaint.assignedStaffName.isBlank()) "Assign Maintenance Staff" else "Reassign Staff (${complaint.assignedStaffName})", color = EspressoBrown)
+                                Text(if (complaint.assignedStaffName.isBlank()) "Assign Maintenance Staff" else "Reassign Staff (${complaint.assignedStaffName})", color = MaterialTheme.colorScheme.onSurface)
                             }
 
                             // 4. Add Resolution Notes
@@ -483,7 +483,7 @@ fun ComplaintDetailScreen(
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(10.dp),
-                                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.5f))
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                             ) {
                                 Icon(Icons.Outlined.Description, contentDescription = null, modifier = Modifier.size(18.dp), tint = SageGreen)
                                 Spacer(modifier = Modifier.width(8.dp))
@@ -542,9 +542,9 @@ fun ComplaintDetailScreen(
                         complaintViewModel.assignStaff(complaintId, staffNameInput, staffRemarkInput)
                         showAssignDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Assign", color = SoftWhite)
+                    Text("Assign", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -608,9 +608,9 @@ fun ComplaintDetailScreen(
                         complaintViewModel.updateStatus(complaintId, selectedNewStatus, statusRemarkInput)
                         showUpdateStatusDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Update Status", color = SoftWhite)
+                    Text("Update Status", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -657,7 +657,7 @@ fun ComplaintDetailScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = MutedTerracotta),
                     enabled = wardenFeedbackInput.isNotBlank()
                 ) {
-                    Text("Submit Feedback", color = SoftWhite)
+                    Text("Submit Feedback", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -695,7 +695,7 @@ fun ComplaintDetailScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = SageGreen)
                 ) {
-                    Text("Save Notes", color = SoftWhite)
+                    Text("Save Notes", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -731,7 +731,7 @@ fun ComplaintDetailScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = SageGreen)
                 ) {
-                    Text("Confirm & Close Ticket", color = SoftWhite)
+                    Text("Confirm & Close Ticket", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -769,7 +769,7 @@ fun ComplaintDetailScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent)
                 ) {
-                    Text("Reopen Ticket", color = SoftWhite)
+                    Text("Reopen Ticket", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -805,9 +805,9 @@ fun ComplaintDetailScreen(
                         complaintViewModel.administrativeClose(complaintId, adminCloseReasonInput)
                         showAdminCloseDialog = false
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Confirm Closure", color = SoftWhite)
+                    Text("Confirm Closure", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {

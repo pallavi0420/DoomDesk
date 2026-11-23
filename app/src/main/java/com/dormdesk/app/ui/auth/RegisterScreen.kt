@@ -91,7 +91,7 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, WarmTaupe.copy(alpha = 0.35f))
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
                 Row(modifier = Modifier.fillMaxWidth().padding(4.dp)) {
                     Surface(
@@ -99,7 +99,7 @@ fun RegisterScreen(
                             .weight(1f)
                             .clip(RoundedCornerShape(9.dp))
                             .clickable { selectedRole = UserRole.STUDENT },
-                        color = if (selectedRole == UserRole.STUDENT) EspressoBrown else Color.Transparent
+                        color = if (selectedRole == UserRole.STUDENT) MaterialTheme.colorScheme.primary else Color.Transparent
                     ) {
                         Row(
                             modifier = Modifier.padding(vertical = 10.dp),
@@ -110,14 +110,14 @@ fun RegisterScreen(
                                 Icons.Default.School,
                                 contentDescription = null,
                                 modifier = Modifier.size(16.dp),
-                                tint = if (selectedRole == UserRole.STUDENT) SoftWhite else WarmTaupe
+                                tint = if (selectedRole == UserRole.STUDENT) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Resident",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (selectedRole == UserRole.STUDENT) FontWeight.Bold else FontWeight.Normal,
-                                color = if (selectedRole == UserRole.STUDENT) SoftWhite else MaterialTheme.colorScheme.onSurface
+                                color = if (selectedRole == UserRole.STUDENT) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -127,7 +127,7 @@ fun RegisterScreen(
                             .weight(1f)
                             .clip(RoundedCornerShape(9.dp))
                             .clickable { selectedRole = UserRole.WARDEN },
-                        color = if (selectedRole == UserRole.WARDEN) MutedTerracotta else Color.Transparent
+                        color = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.secondary else Color.Transparent
                     ) {
                         Row(
                             modifier = Modifier.padding(vertical = 10.dp),
@@ -138,14 +138,14 @@ fun RegisterScreen(
                                 Icons.Default.AdminPanelSettings,
                                 contentDescription = null,
                                 modifier = Modifier.size(16.dp),
-                                tint = if (selectedRole == UserRole.WARDEN) SoftWhite else WarmTaupe
+                                tint = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Hostel Warden",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (selectedRole == UserRole.WARDEN) FontWeight.Bold else FontWeight.Normal,
-                                color = if (selectedRole == UserRole.WARDEN) SoftWhite else MaterialTheme.colorScheme.onSurface
+                                color = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -175,7 +175,7 @@ fun RegisterScreen(
                     text = "Personal Information",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = EspressoBrown
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -184,7 +184,7 @@ fun RegisterScreen(
                     onValueChange = { fullName = it },
                     label = { Text(if (selectedRole == UserRole.WARDEN) "Warden Full Name *" else "Full Name *") },
                     placeholder = { Text(if (selectedRole == UserRole.WARDEN) "e.g. Dr. Rajesh Kumar" else "e.g. Aarav Patel") },
-                    leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     singleLine = true
@@ -197,7 +197,7 @@ fun RegisterScreen(
                     onValueChange = { studentId = it },
                     label = { Text(if (selectedRole == UserRole.WARDEN) "Staff / Warden ID *" else "Student Registration ID *") },
                     placeholder = { Text(if (selectedRole == UserRole.WARDEN) "e.g. STAFF-W03" else "e.g. 2024CS101") },
-                    leadingIcon = { Icon(Icons.Outlined.Badge, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Badge, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     singleLine = true
@@ -210,7 +210,7 @@ fun RegisterScreen(
                     onValueChange = { email = it },
                     label = { Text(if (selectedRole == UserRole.WARDEN) "Official Warden Email *" else "Email Address *") },
                     placeholder = { Text(if (selectedRole == UserRole.WARDEN) "warden.name@dormdesk.app" else "resident@dormdesk.app") },
-                    leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Email, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     singleLine = true,
@@ -224,7 +224,7 @@ fun RegisterScreen(
                     onValueChange = { phone = it },
                     label = { Text("Phone Number") },
                     placeholder = { Text("+91 98765 43210") },
-                    leadingIcon = { Icon(Icons.Outlined.Phone, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Phone, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     singleLine = true,
@@ -240,7 +240,7 @@ fun RegisterScreen(
                     text = if (selectedRole == UserRole.WARDEN) "Hostel & Office Allocation" else "Hostel Allocation",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = EspressoBrown
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -248,7 +248,7 @@ fun RegisterScreen(
                     value = hostel,
                     onValueChange = { hostel = it },
                     label = { Text("Hostel Name *") },
-                    leadingIcon = { Icon(Icons.Outlined.Apartment, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Apartment, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
                     singleLine = true
@@ -290,7 +290,7 @@ fun RegisterScreen(
                     text = "Security",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = EspressoBrown
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -298,13 +298,13 @@ fun RegisterScreen(
                     value = password,
                     onValueChange = { password = it },
                     label = { Text("Password * (min 6 characters)") },
-                    leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
                                 imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                                 contentDescription = null,
-                                tint = WarmTaupe
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     },
@@ -321,7 +321,7 @@ fun RegisterScreen(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
                     label = { Text("Confirm Password *") },
-                    leadingIcon = { Icon(Icons.Outlined.LockClock, contentDescription = null, tint = WarmTaupe) },
+                    leadingIcon = { Icon(Icons.Outlined.LockClock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp),
@@ -353,17 +353,17 @@ fun RegisterScreen(
                     .height(52.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedRole == UserRole.WARDEN) MutedTerracotta else EspressoBrown
+                    containerColor = if (selectedRole == UserRole.WARDEN) MaterialTheme.colorScheme.secondary else EspressoBrown
                 ),
                 enabled = !isLoading
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.size(20.dp), color = SoftWhite)
+                    CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary)
                 } else {
                     Text(
                         text = if (selectedRole == UserRole.WARDEN) "Complete Warden Registration" else "Complete Resident Registration",
                         style = MaterialTheme.typography.titleMedium,
-                        color = SoftWhite
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

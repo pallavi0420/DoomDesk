@@ -86,9 +86,9 @@ fun StudentMainScreen(
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = EspressoBrown,
-                            selectedTextColor = EspressoBrown,
-                            indicatorColor = EspressoBrown.copy(alpha = 0.12f),
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
                             unselectedIconColor = WarmTaupe,
                             unselectedTextColor = WarmTaupe
                         )

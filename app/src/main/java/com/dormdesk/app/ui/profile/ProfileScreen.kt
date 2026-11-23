@@ -55,14 +55,14 @@ fun ProfileScreen(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
-                .background(if (currentUser.isWarden) MutedTerracotta else EspressoBrown),
+                .background(if (currentUser.isWarden) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = currentUser.initials,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = SoftWhite
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -99,7 +99,7 @@ fun ProfileScreen(
                 text = if (currentUser.isWarden) "Warden Official Details" else "Resident Account Details",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = EspressoBrown
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(14.dp))
 
@@ -146,7 +146,7 @@ fun ProfileScreen(
                         )
                     }
                 }
-                Icon(Icons.Outlined.ChevronRight, contentDescription = null, tint = WarmTaupe)
+                Icon(Icons.Outlined.ChevronRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
 
@@ -162,10 +162,10 @@ fun ProfileScreen(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(EspressoBrown),
+                        .background(MaterialTheme.colorScheme.primary),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Default.HomeWork, contentDescription = null, tint = SoftWhite, modifier = Modifier.size(22.dp))
+                    Icon(Icons.Default.HomeWork, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(22.dp))
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
@@ -187,8 +187,8 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = EspressoBrown.copy(alpha = 0.1f),
-                contentColor = EspressoBrown
+                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                contentColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(12.dp)
         ) {
@@ -245,7 +245,7 @@ fun ProfileScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = StatusUrgent)
                 ) {
-                    Text("Delete Account", color = SoftWhite)
+                    Text("Delete Account", color = MaterialTheme.colorScheme.onPrimary)
                 }
             },
             dismissButton = {
@@ -280,9 +280,9 @@ fun ProfileScreen(
             confirmButton = {
                 Button(
                     onClick = { showPrivacyPolicyDialog = false },
-                    colors = ButtonDefaults.buttonColors(containerColor = EspressoBrown)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Close", color = SoftWhite)
+                    Text("Close", color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         )
@@ -297,7 +297,7 @@ fun ProfileInfoRow(icon: ImageVector, label: String, value: String) {
             .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(icon, contentDescription = null, tint = WarmTaupe, modifier = Modifier.size(18.dp))
+        Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(90.dp))
         Text(text = value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)

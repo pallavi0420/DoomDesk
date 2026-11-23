@@ -90,14 +90,14 @@ fun StudentHomeScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(CircleShape)
-                                .background(EspressoBrown),
+                                .background(MaterialTheme.colorScheme.primary),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = currentUser.initials,
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = SoftWhite
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
 
@@ -124,7 +124,7 @@ fun StudentHomeScreen(
                                     Badge(containerColor = MutedTerracotta) {
                                         Text(
                                             text = "$unreadNotificationCount",
-                                            color = SoftWhite,
+                                            color = MaterialTheme.colorScheme.onPrimary,
                                             fontSize = 10.sp
                                         )
                                     }
@@ -187,7 +187,7 @@ fun StudentHomeScreen(
                         title = "Total",
                         count = "$totalComplaints",
                         icon = Icons.Outlined.FolderCopy,
-                        iconTint = EspressoBrown,
+                        iconTint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f),
                         onClick = onNavigateToComplaints
                     )
@@ -244,7 +244,7 @@ fun StudentHomeScreen(
                         title = "My Complaints",
                         subtitle = "Track active tickets",
                         icon = Icons.Outlined.Assignment,
-                        iconTint = EspressoBrown,
+                        iconTint = MaterialTheme.colorScheme.primary,
                         containerColor = MaterialTheme.colorScheme.surface,
                         borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
                         modifier = Modifier.weight(1f),
@@ -377,7 +377,7 @@ fun StudentHomeScreen(
                     )
                     if (myComplaints.isNotEmpty()) {
                         TextButton(onClick = onNavigateToComplaints) {
-                            Text("See All (${myComplaints.size})", color = EspressoBrown, style = MaterialTheme.typography.labelMedium)
+                            Text("See All (${myComplaints.size})", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelMedium)
                         }
                     }
                 }
@@ -416,7 +416,7 @@ fun StudentHomeScreen(
                                 text = "#${complaint.complaintId}",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = WarmTaupe
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             StatusBadge(status = complaint.status)
                         }
