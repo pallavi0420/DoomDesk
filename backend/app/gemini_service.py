@@ -47,7 +47,7 @@ async def query_gemini_or_fallback(
 
     # 2. Check for Google Gemini API Key
     gemini_api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
+    gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
 
     # Build context prompt
     user_context = f"Student Name: {student_name or 'Resident'}, ID: {student_id or 'N/A'}, Room: {room_number or 'N/A'}."

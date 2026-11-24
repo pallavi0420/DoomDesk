@@ -72,7 +72,7 @@ def health_check():
     grok_key = (os.getenv("GROK_API_KEY") or os.getenv("XAI_API_KEY") or "").strip()
     grok_model = os.getenv("GROK_MODEL", "grok-2-latest").strip()
     gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
-    gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
+    gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
 
     if grok_key and grok_key not in ["your_grok_api_key_here", "your_xai_api_key_here"]:
         return HealthResponseDto(
