@@ -7,6 +7,7 @@ from app.faq_data import search_local_faq
 load_dotenv()
 
 GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+GROK_BASE_URL = "https://api.x.ai/v1/chat/completions"
 
 SYSTEM_PROMPT = """You are DormDesk AI, a helpful, polite, and professional hostel management assistant for residents of Aryabhatta Hostel.
 Tagline: "Your Hostel. Your Voice. One Desk."
@@ -20,6 +21,18 @@ Role & Responsibilities:
 6. Keep your answers concise, practical, and formatted cleanly.
 """
 
+def determine_action_route(user_message: str) -> Optional[str]:
+    lower_query = user_message.lower()
+    if any(k in lower_query for k in ["raise", "lodge", "report", "new complaint"]):
+        return "student_complaint_raise"
+    elif any(k in lower_query for k in ["my complaint", "status", "pending", "active tickets"]):
+        return "student_complaints"
+    elif any(k in lower_query for k in ["notice", "announcement", "bulletin", "circular"]):
+        return "student_notices"
+    elif any(k in lower_query for k in ["feedback", "suggestion", "review"]):
+        return "student_feedback"
+    return None
+
 async def query_gemini_or_fallback(
     user_message: str,
     student_id: Optional[str] = None,
@@ -28,17 +41,13 @@ async def query_gemini_or_fallback(
     active_complaints_summary: Optional[str] = None,
     conversation_history: Optional[List[Dict[str, str]]] = None
 ) -> Dict:
-    api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
+    # 1. Check for xAI Grok API Key first
+    grok_api_key = (os.getenv("GROK_API_KEY") or os.getenv("XAI_API_KEY") or "").strip()
+    grok_model = os.getenv("GROK_MODEL", "grok-2-latest").strip()
 
-    # If key is missing or blank, use local FAQ engine immediately
-    if not api_key or api_key == "your_gemini_api_key_here":
-        return search_local_faq(
-            query=user_message,
-            student_name=student_name,
-            room_number=room_number,
-            complaints_summary=active_complaints_summary
-        )
+    # 2. Check for Google Gemini API Key
+    gemini_api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
 
     # Build context prompt
     user_context = f"Student Name: {student_name or 'Resident'}, ID: {student_id or 'N/A'}, Room: {room_number or 'N/A'}."
@@ -47,83 +56,89 @@ async def query_gemini_or_fallback(
 
     full_system_instruction = f"{SYSTEM_PROMPT}\n\nResident Context:\n{user_context}"
 
-    # Build Gemini contents list
-    contents = []
+    # A) Try Grok (xAI) if configured
+    if grok_api_key and grok_api_key not in ["your_grok_api_key_here", "your_xai_api_key_here"]:
+        try:
+            messages = [{"role": "system", "content": full_system_instruction}]
+            if conversation_history:
+                for hist in conversation_history[-6:]:
+                    role = "user" if hist.get("role") == "user" else "assistant"
+                    content = hist.get("content", "")
+                    if content:
+                        messages.append({"role": role, "content": content})
+            messages.append({"role": "user", "content": user_message})
 
-    # Past conversation history
-    if conversation_history:
-        for hist in conversation_history[-6:]:
-            role = "user" if hist.get("role") == "user" else "model"
-            content = hist.get("content", "")
-            if content:
-                contents.append({
-                    "role": role,
-                    "parts": [{"text": content}]
-                })
+            payload = {
+                "model": grok_model,
+                "messages": messages,
+                "temperature": 0.4,
+                "max_tokens": 512
+            }
+            headers = {
+                "Authorization": f"Bearer {grok_api_key}",
+                "Content-Type": "application/json"
+            }
 
-    # Latest user query
-    contents.append({
-        "role": "user",
-        "parts": [{"text": user_message}]
-    })
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.post(GROK_BASE_URL, json=payload, headers=headers)
+                if response.status_code == 200:
+                    data = response.json()
+                    choices = data.get("choices", [])
+                    if choices:
+                        reply_text = choices[0].get("message", {}).get("content", "")
+                        if reply_text:
+                            return {
+                                "reply": reply_text.strip(),
+                                "source": f"grok:{grok_model}",
+                                "isFallback": False,
+                                "actionRoute": determine_action_route(user_message)
+                            }
+        except Exception:
+            pass  # Fall through to Gemini or local FAQ fallback
 
-    endpoint_url = f"{GEMINI_BASE_URL}/{model}:generateContent?key={api_key}"
+    # B) Try Gemini if configured
+    if gemini_api_key and gemini_api_key != "your_gemini_api_key_here":
+        try:
+            contents = []
+            if conversation_history:
+                for hist in conversation_history[-6:]:
+                    role = "user" if hist.get("role") == "user" else "model"
+                    content = hist.get("content", "")
+                    if content:
+                        contents.append({"role": role, "parts": [{"text": content}]})
 
-    payload = {
-        "systemInstruction": {
-            "parts": [{"text": full_system_instruction}]
-        },
-        "contents": contents,
-        "generationConfig": {
-            "temperature": 0.4,
-            "maxOutputTokens": 512
-        }
-    }
+            contents.append({"role": "user", "parts": [{"text": user_message}]})
+            endpoint_url = f"{GEMINI_BASE_URL}/{gemini_model}:generateContent?key={gemini_api_key}"
 
-    try:
-        async with httpx.AsyncClient(timeout=8.0) as client:
-            headers = {"Content-Type": "application/json"}
-            response = await client.post(endpoint_url, json=payload, headers=headers)
+            payload = {
+                "systemInstruction": {"parts": [{"text": full_system_instruction}]},
+                "contents": contents,
+                "generationConfig": {"temperature": 0.4, "maxOutputTokens": 512}
+            }
 
-            if response.status_code == 200:
-                data = response.json()
-                candidates = data.get("candidates", [])
-                if candidates:
-                    parts = candidates[0].get("content", {}).get("parts", [])
-                    reply_text = parts[0].get("text", "") if parts else ""
+            async with httpx.AsyncClient(timeout=8.0) as client:
+                headers = {"Content-Type": "application/json"}
+                response = await client.post(endpoint_url, json=payload, headers=headers)
+                if response.status_code == 200:
+                    data = response.json()
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        parts = candidates[0].get("content", {}).get("parts", [])
+                        reply_text = parts[0].get("text", "") if parts else ""
+                        if reply_text:
+                            return {
+                                "reply": reply_text.strip(),
+                                "source": f"gemini:{gemini_model}",
+                                "isFallback": False,
+                                "actionRoute": determine_action_route(user_message)
+                            }
+        except Exception:
+            pass
 
-                    # Action route determination
-                    action_route = None
-                    lower_query = user_message.lower()
-                    if "raise" in lower_query or "lodge" in lower_query or "report" in lower_query:
-                        action_route = "student_complaint_raise"
-                    elif "my complaint" in lower_query or "pending" in lower_query:
-                        action_route = "student_complaints"
-                    elif "notice" in lower_query or "announcement" in lower_query:
-                        action_route = "student_notices"
-                    elif "feedback" in lower_query:
-                        action_route = "student_feedback"
-
-                    return {
-                        "reply": reply_text.strip(),
-                        "source": f"gemini:{model}",
-                        "isFallback": False,
-                        "actionRoute": action_route
-                    }
-
-            # If Gemini API returns rate limit or quota error, fallback gracefully
-            return search_local_faq(
-                query=user_message,
-                student_name=student_name,
-                room_number=room_number,
-                complaints_summary=active_complaints_summary
-            )
-
-    except Exception:
-        # Fallback to local FAQ engine on network error or timeout
-        return search_local_faq(
-            query=user_message,
-            student_name=student_name,
-            room_number=room_number,
-            complaints_summary=active_complaints_summary
-        )
+    # C) Offline / Fallback FAQ engine
+    return search_local_faq(
+        query=user_message,
+        student_name=student_name,
+        room_number=room_number,
+        complaints_summary=active_complaints_summary
+    )

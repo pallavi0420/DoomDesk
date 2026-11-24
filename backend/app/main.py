@@ -18,7 +18,7 @@ load_dotenv()
 
 app = FastAPI(
     title="DormDesk AI Backend",
-    description="Secure FastAPI backend providing Google Gemini API integration and Local FAQ fallback for the DormDesk Android App",
+    description="Secure FastAPI backend providing xAI Grok / Google Gemini API integration and Local FAQ fallback for the DormDesk Android App",
     version="1.0.0"
 )
 
@@ -57,25 +57,44 @@ class HealthResponseDto(BaseModel):
 
 @app.get("/", tags=["Root"])
 def root():
+    grok_key = (os.getenv("GROK_API_KEY") or os.getenv("XAI_API_KEY") or "").strip()
+    gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+    provider = "xAI Grok" if (grok_key and grok_key != "your_grok_api_key_here") else ("Google Gemini" if (gemini_key and gemini_key != "your_gemini_api_key_here") else "Offline FAQs")
     return {
         "app": "DormDesk AI Backend",
         "tagline": "Your Hostel. Your Voice. One Desk.",
-        "provider": "Google Gemini",
+        "provider": provider,
         "status": "operational"
     }
 
 @app.get("/api/health", response_model=HealthResponseDto, tags=["Health"])
 def health_check():
-    api_key = os.getenv("GEMINI_API_KEY", "").strip()
-    model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
-    is_configured = bool(api_key and api_key != "your_gemini_api_key_here")
+    grok_key = (os.getenv("GROK_API_KEY") or os.getenv("XAI_API_KEY") or "").strip()
+    grok_model = os.getenv("GROK_MODEL", "grok-2-latest").strip()
+    gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+    gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash").strip()
 
-    return HealthResponseDto(
-        status="ok",
-        aiConfigured=is_configured,
-        provider="Google Gemini",
-        model=model
-    )
+    if grok_key and grok_key not in ["your_grok_api_key_here", "your_xai_api_key_here"]:
+        return HealthResponseDto(
+            status="ok",
+            aiConfigured=True,
+            provider="xAI Grok",
+            model=grok_model
+        )
+    elif gemini_key and gemini_key != "your_gemini_api_key_here":
+        return HealthResponseDto(
+            status="ok",
+            aiConfigured=True,
+            provider="Google Gemini",
+            model=gemini_model
+        )
+    else:
+        return HealthResponseDto(
+            status="ok",
+            aiConfigured=False,
+            provider="Offline / Local FAQs",
+            model="local-rule-engine"
+        )
 
 @app.post("/api/chat", response_model=ChatResponseDto, tags=["Chat"])
 async def chat_endpoint(payload: ChatRequestDto):
