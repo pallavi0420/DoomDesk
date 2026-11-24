@@ -9,9 +9,8 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    // 10.0.2.2 is standard Android emulator host mapping to localhost
-    // For physical devices on local Wi-Fi, change to local IP e.g. 192.168.1.X:8000
-    private var baseUrl: String = "http://10.0.2.2:8000/"
+    // Cloud production URL on Render
+    private var baseUrl: String = "https://dormdesk-backend-z83h.onrender.com/"
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -25,10 +24,10 @@ object RetrofitClient {
         }
         OkHttpClient.Builder()
             .addInterceptor(logging)
-            .connectTimeout(3, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(5, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(false)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(25, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
             .build()
     }
 
